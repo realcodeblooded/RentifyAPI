@@ -23,11 +23,12 @@ export class Server {
      * 
      * @throws {Error} If server initialization fails, logs error and exits process
      */
-    start() {
+    async start() {
         try {
             this.initializeMiddleware();
             this.configureRoutes();
-            this.initializeDatabase();
+            this.server.use(errorMiddleware);
+            await this.initializeDatabase();
 
             const PORT = config.port;
             this.server.listen(PORT, () => {
@@ -52,7 +53,6 @@ export class Server {
         this.server.use(helmet());
         this.server.use(Express.urlencoded({ extended: true }));
         this.server.use(loggerMiddleware);
-        this.server.use(errorMiddleware);
         this.server.use(morgan('combined'));
     }
 
