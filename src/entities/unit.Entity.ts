@@ -1,0 +1,81 @@
+import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany } from "typeorm";
+import { Building } from "./building.Entity";
+import { User } from "./user.Entity";
+import { Tenancy } from "./tenancy.Entity";
+
+export enum UnitStatus {
+    VACANT = 'VACANT',
+    OCCUPIED = 'OCCUPIED'
+}
+
+@Entity('units')
+export class Unit {
+    /**
+     * Unique identifier for the unit (UUID format)
+     */
+    @PrimaryGeneratedColumn('uuid')
+    id!: string;
+
+    /**
+     * Unique key for the unit (e.g., unit number)
+     * @example "A-101", "3B"
+     */
+    @Column({ length: 50, unique: true })
+    unitKey!: string;
+
+    /**
+     * Floor number where the unit is located
+     * @example 3
+     */
+    @Column({ type: 'int' })
+    floor!: number;
+
+    /**
+     * Building this unit belongs to
+     */
+    @ManyToOne(() => Building, building => building.units, { 
+        onDelete: 'CASCADE' 
+    })
+    building!: Building;
+
+    /**
+     * Current tenant of the unit (nullable for vacant units)
+     */
+    @ManyToOne(() => User, { nullable: true, onDelete: 'SET NULL' })
+    tenant?: User;
+
+    /**
+     * Type of the unit
+     * @example "1 Bedroom", "Studio", "2 Bedroom", "Penthouse"
+     */
+    @Column({ length: 50 })
+    type!: string;
+
+    /**
+     * Description of the unit
+     * @example "Spacious 1-bedroom unit with balcony and city view"
+     */
+    @Column({ type: 'text', nullable: true })
+    description?: string;
+
+    /**
+     * Monthly rent amount for the unit
+     * @example 1200.00
+     */
+    @Column({ type: 'decimal', precision: 10, scale: 2 })
+    rent!: number;
+
+    /**
+     * Tenancy history for this unit
+     */
+    @OneToMany(() => Tenancy, tenancy => tenancy.unit)
+    tenancies!: Tenancy[];
+
+    /**
+     * Computed status based on whether unit has a tenant
+     * Not stored in database - calculated on the fly
+     */
+    get status(): UnitStatus {
+        return this.tenant ? UnitStatus.OCCUPIED : UnitStatus.VACANT;
+    }
+}
