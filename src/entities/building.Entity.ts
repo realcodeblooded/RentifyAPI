@@ -1,7 +1,8 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { BuildingType } from "../types/building.Types";
 import { Tenancy } from "./tenancy.Entity";
 import { Unit } from "./unit.Entity";
+import { Amenities } from "./amenities.Entity";
 
 @Entity('building')
 export class Building {
@@ -38,6 +39,12 @@ export class Building {
      */
     @Column({ type: 'enum', enum: BuildingType, nullable: false })
     type!: BuildingType;
+
+    /** 
+     * Amenities available in the building
+     */
+    @ManyToMany(() => Amenities, amenity => amenity.buildings)
+    amenities!: Amenities[];
 
     /** 
      * Timestamp when the building was created
