@@ -2,6 +2,8 @@ import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany } from "ty
 import { Building } from "./building.Entity";
 import { User } from "./user.Entity";
 import { Tenancy } from "./tenancy.Entity";
+import { UnitType } from "../types/building.Types";
+import { IsEnum } from "class-validator";
 
 export enum UnitStatus {
     VACANT = 'VACANT',
@@ -48,7 +50,8 @@ export class Unit {
      * Type of the unit
      * @example "1 Bedroom", "Studio", "2 Bedroom", "Penthouse"
      */
-    @Column({ length: 50 })
+    @Column({ type: 'enum', enum: UnitType })
+    @IsEnum(UnitType, { message: 'type must be a valid UnitType' })
     type!: string;
 
     /**
