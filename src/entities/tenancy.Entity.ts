@@ -4,13 +4,15 @@ import {
     ManyToOne, 
     CreateDateColumn, 
     DeleteDateColumn,
-    Column, 
-    ManyToMany
+    ManyToMany,
+    OneToMany,
+    UpdateDateColumn
 } from "typeorm";
 import { Building } from "./building.Entity";
 import { Unit } from "./unit.Entity";
 import { User } from "./user.Entity";
 import { Maintenance } from "./maintenance.Entity";
+import { Contract } from "./contract.Entity";
 
 @Entity('tenancies')
 export class Tenancy {
@@ -24,7 +26,8 @@ export class Tenancy {
      * Building where the tenancy is located
      */
     @ManyToOne(() => Building, building => building.tenancies, { 
-        onDelete: 'CASCADE' 
+        onDelete: 'CASCADE',
+        eager: true
     })
     building!: Building;
 
@@ -32,7 +35,8 @@ export class Tenancy {
      * Unit being rented
      */
     @ManyToOne(() => Unit, unit => unit.tenancies, { 
-        onDelete: 'CASCADE' 
+        onDelete: 'CASCADE',
+        eager: true
     })
     unit!: Unit;
 
@@ -40,9 +44,12 @@ export class Tenancy {
      * Tenant (user) renting the unit
      */
     @ManyToOne(() => User, user => user.tenancies, { 
-        onDelete: 'RESTRICT' 
+        onDelete: 'RESTRICT'
     })
     tenant!: User;
+
+    @OneToMany(() => Contract, contract => contract.tenancy, { nullable: false })
+    contracts!: Contract[];
 
     /** 
      * Maintenance requests associated with this tenancy
@@ -56,6 +63,13 @@ export class Tenancy {
      */
     @CreateDateColumn()
     startDate!: Date;
+
+    /** 
+     * When the tenancy was last updated
+     */
+
+    @UpdateDateColumn()
+    updatedAt!: Date;
 
     /**
      * When the tenancy ended

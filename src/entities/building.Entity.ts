@@ -1,6 +1,7 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { BuildingType } from "../types/building.Types";
 import { Tenancy } from "./tenancy.Entity";
+import { Unit } from "./unit.Entity";
 
 @Entity('building')
 export class Building {
@@ -19,10 +20,10 @@ export class Building {
 
     /** 
      * Location(s) of the building
-     * @example ["123 Main St, Springfield", "456 Elm St, Springfield"]
+     * @example "123 Main St, Springfield"
      */
-    @Column({ type: 'json' })
-    location!: string[];
+    @Column({ type: 'varchar', length: 255, nullable: false })
+    location!: string;
 
     /** 
      * Photo URLs of the building
@@ -39,21 +40,6 @@ export class Building {
     type!: BuildingType;
 
     /** 
-     * First rent payment date
-     * @example "2024-07-01"
-     */
-    @Column({ type: 'date', nullable: false })
-    firstRentpayDate!: Date;
-
-    /** 
-     * Late rent payment date
-     * End of grace period
-     * @example "2024-07-10"
-     */
-    @Column({ type: 'date', nullable: false })
-    lateRentPayDate!: Date;
-
-    /** 
      * Timestamp when the building was created
      */
     @CreateDateColumn()
@@ -62,7 +48,7 @@ export class Building {
     /** 
      * Timestamp when the building was last updated
      */
-    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
+    @UpdateDateColumn()
     updatedAt!: Date;
 
     /** 
@@ -74,6 +60,6 @@ export class Building {
     /** 
      * Units associated with the building
      */
-    @OneToMany(() => Tenancy, tenancy => tenancy.unit)
-    units!: Tenancy[];
+    @OneToMany(() => Unit, unit => unit.building)
+    units!: Unit[];
 }

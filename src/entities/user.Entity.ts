@@ -20,6 +20,7 @@ import {
 } from "class-validator";
 import { Role } from "./role.Entity";
 import { Tenancy } from "./tenancy.Entity";
+import { NextOfKin } from "./nextOfKin.Entity";
 
 /**
  * User entity representing a registered user in the system.
@@ -89,25 +90,6 @@ export class User {
     email!: string;
 
     /**
-     * Full name of the user's next of kin
-     * @example "Jane Doe"
-     */
-    @Column({ length: 200 })
-    @IsNotEmpty({ message: 'Next of kin full name is required' })
-    @IsString({ message: 'Next of kin full name must be a string' })
-    @Length(2, 200, { message: 'Next of kin full name must be between 2 and 200 characters' })
-    nextOfKinFullName!: string;
-
-    /**
-     * Phone number of the user's next of kin
-     * @example "+254723456789"
-     */
-    @Column({ length: 20 })
-    @IsNotEmpty({ message: 'Next of kin phone number is required' })
-    @IsPhoneNumber('KE', { message: 'Next of kin phone number must be a valid Kenyan phone number' })
-    nextOfKinPhone!: string;
-
-    /**
      * Role assigned to the user
      * Many users can have one role
      */
@@ -115,6 +97,14 @@ export class User {
     @ManyToOne(() => Role, role => role.users, { eager: true })
     role!: Role;
 
+    /** 
+     * Tenancies associated with the user
+     */
+    @OneToMany(() => Tenancy, tenancy => tenancy.tenant)
+    tenancies!: Tenancy[];
+
+    @OneToMany(() => NextOfKin, nextOfKin => nextOfKin.user, { cascade: true, eager: true })
+    nextOfKins!: NextOfKin[];
 
     /**
      * Timestamp when the user record was created
@@ -153,10 +143,4 @@ export class User {
     isActive(): boolean {
         return !this.deletedAt;
     }
-
-    /** 
-     * Tenancies associated with the user
-     */
-    @OneToMany(() => Tenancy, tenancy => tenancy.tenant)
-    tenancies!: Tenancy[];
 }

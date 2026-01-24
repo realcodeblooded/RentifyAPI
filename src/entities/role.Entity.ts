@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn , CreateDateColumn} from "typeorm";
 import { User } from "./user.Entity";
 import { RoleKey } from "..//types/role.Types";
+import { IsEnum, IsNotEmpty } from "class-validator";
 
 @Entity('roles')
 export class Role {
@@ -15,6 +16,7 @@ export class Role {
      * @example "ADMIN"
      */
     @Column({ type: 'enum', unique: true, enum: RoleKey, default: RoleKey.TENANT })
+    @IsNotEmpty({ message: 'Role key is required'})
     key!: RoleKey;
 
     /** 
@@ -22,6 +24,7 @@ export class Role {
      * @example "Administrator"
      */
     @Column({ length: 100 })
+    @IsNotEmpty({ message: 'Role key is required'})
     name!: string;
 
     /** 
