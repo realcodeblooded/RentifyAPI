@@ -2,6 +2,7 @@ import { getVersionInfo } from "../config/version";
 import { Router } from "express";
 import { Server } from "../classes/server";
 import { healthRoutes } from "./health";
+import { userRoutes } from "./user.Routes";
 
 /**
  * Main application routes configuration class.
@@ -44,6 +45,7 @@ class Routes  {
     initializeRoutes() {
         // Define your routes here
         this.router.use('/health', healthRoutes.router);
+        this.router.use('/users', userRoutes.router)
     }
 }
 

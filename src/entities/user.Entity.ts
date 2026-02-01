@@ -1,22 +1,24 @@
-import { 
-    Column, 
-    CreateDateColumn, 
-    DeleteDateColumn, 
-    Entity, 
+import {
+    BaseEntity,
+    Column,
+    CreateDateColumn,
+    DeleteDateColumn,
+    Entity,
     Index,
+    JoinColumn,
     ManyToOne,
     OneToMany,
-    PrimaryGeneratedColumn, 
-    UpdateDateColumn 
+    PrimaryGeneratedColumn,
+    UpdateDateColumn
 } from "typeorm";
-import { 
-    IsEmail, 
-    IsNotEmpty, 
-    IsNumber, 
-    IsPhoneNumber, 
-    IsString, 
-    Length, 
-    Min 
+import {
+    IsEmail,
+    IsNotEmpty,
+    IsNumber,
+    IsPhoneNumber,
+    IsString,
+    Length,
+    Min
 } from "class-validator";
 import { Role } from "./role.Entity";
 import { Tenancy } from "./tenancy.Entity";
@@ -28,7 +30,7 @@ import { NextOfKin } from "./nextOfKin.Entity";
  */
 @Entity('users')
 @Index(['firstName'])
-export class User {
+export class User extends BaseEntity {
     /**
      * Unique identifier for the user (UUID format)
      */
@@ -89,12 +91,16 @@ export class User {
     @IsEmail({}, { message: 'Email must be a valid email address' })
     email!: string;
 
+    @Column({ name: 'roleId' })
+    roleId!: string;
+
     /**
      * Role assigned to the user
      * Many users can have one role
      */
 
-    @ManyToOne(() => Role, role => role.users, { eager: true })
+    @ManyToOne(() => Role, role => role.users, { nullable: false })
+    @JoinColumn({name:'roleId'})
     role!: Role;
 
     /** 
