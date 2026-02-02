@@ -9,8 +9,6 @@ export class UserController {
         try {
             const userData: BaseUserDetails = req.body;
 
-            console.log(userData)
-
             const isUserAdded = await userClass.addUser({...userData }, RoleKey.MANAGER);
 
             if(!isUserAdded.success) {
