@@ -15,6 +15,7 @@ class UserRoutes {
 
     initializeRoutes() {
         this.router.post("/CreateManager", validate(userSchema), this.controller.addManager);
+        this.router.post("/CreateTenant", validate(userSchema), this.controller.addTenant);
     }
 }
 
