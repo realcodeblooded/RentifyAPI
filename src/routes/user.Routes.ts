@@ -1,5 +1,7 @@
+import { validate } from "../middlewares/validate.middleware";
 import { UserController } from "../controllers/user.Controller";
 import { Router } from "express";
+import { userSchema } from "../validators/user.Validators";
 
 class UserRoutes {
     router: Router;
@@ -12,7 +14,7 @@ class UserRoutes {
     };
 
     initializeRoutes() {
-        this.router.post("/CreateManager", this.controller.addManager);
+        this.router.post("/CreateManager", validate(userSchema), this.controller.addManager);
     }
 }
 

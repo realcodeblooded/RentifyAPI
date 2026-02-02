@@ -3,15 +3,16 @@ import { User } from "../entities/user.Entity";
 import { BaseUserDetails } from "../types/user.Types";
 import { BaseResponse } from "../types/response.types";
 import { authClass } from "./auth.Class";
+import { RoleKey } from "../types/role.Types";
 
 class UserClass {
-    async addUser(userData: BaseUserDetails): Promise<BaseResponse> {
+    async addUser(userData: BaseUserDetails, role: RoleKey): Promise<BaseResponse> {
         try {
             // Hash the user password
             let hashedPassword = await authClass.hashPassword(userData.password);
 
             // Get the role Id
-            const roleId = await authClass.getRoleId(userData.roleKey);
+            const roleId = await authClass.getRoleId(role);
             if (!roleId) return { success: false, message: "Invalid role", data: null };
 
             let newUser = User.create({

@@ -29,7 +29,8 @@
     "mysql2": "^3.6.1",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.3.17",
-    "winston": "^3.11.0"
+    "winston": "^3.11.0",
+    "yup": "^1.7.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.13",

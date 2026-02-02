@@ -11,7 +11,7 @@ export class UserController {
 
             console.log(userData)
 
-            const isUserAdded = await userClass.addUser({...userData, roleKey: RoleKey.MANAGER });
+            const isUserAdded = await userClass.addUser({...userData }, RoleKey.MANAGER);
 
             if(!isUserAdded.success) {
                 return res.status(400).json({ isUserAdded });

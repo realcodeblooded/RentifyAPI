@@ -8,7 +8,6 @@ export type BaseUserDetails = {
     password: string;
     idNumber: number;
     nextOfKins: NextOfKinDetails[]
-    roleKey: RoleKey
 };
 
 export type NextOfKinDetails = {
@@ -16,7 +15,6 @@ export type NextOfKinDetails = {
     lastName: string;
     phoneNumber: string;
     relationship: NextOfKinRelationship;
-    userId: string
 }
 
 export enum NextOfKinRelationship {
