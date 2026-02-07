@@ -1,10 +1,10 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn , CreateDateColumn} from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn , CreateDateColumn, BaseEntity} from "typeorm";
 import { User } from "./user.Entity";
 import { RoleKey } from "..//types/role.Types";
 import { IsEnum, IsNotEmpty } from "class-validator";
 
 @Entity('roles')
-export class Role {
+export class Role extends BaseEntity {
     /**
      * Unique identifier for the role (UUID format)
      */

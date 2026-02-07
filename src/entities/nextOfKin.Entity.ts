@@ -1,9 +1,10 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { User } from "./user.Entity";
 import { Length,IsString, IsNotEmpty, IsPhoneNumber, IsEnum } from "class-validator";
+import { NextOfKinRelationship } from "../types/user.Types";
 
 @Entity('next_of_kin')
-export class NextOfKin {
+export class NextOfKin extends BaseEntity {
     // NextOfKin entity definition goes here
     /** 
      * Unique identifier for the next of kin (UUID format)
@@ -35,9 +36,9 @@ export class NextOfKin {
      * Relationship to the user
      * @example "Sibling"
      */
-    @Column({ type: 'enum', enum: ['Spouse', 'Parent', 'Sibling', 'Friend', 'Other'] })
+    @Column({ type: 'enum', enum: NextOfKinRelationship })
     @IsNotEmpty({ message: 'Relationship is required' })
-    @IsEnum(['Spouse', 'Parent', 'Sibling', 'Friend', 'Other'], { message: 'Relationship must be one of the predefined values' })
+    @IsEnum(NextOfKinRelationship, { message: 'Relationship must be one of the predefined values' })
     relationship!: string;
 
     /** 
@@ -52,7 +53,7 @@ export class NextOfKin {
     /** 
      * Associated user for this next of kin
      */
-    @ManyToOne(() => User, user => user.nextOfKins)
+    @ManyToOne(() => User, user => user.nextOfKins, { nullable: false })
     user!: User;
 
     /** 
