@@ -23,8 +23,14 @@ export class Building {
      * Location(s) of the building
      * @example "123 Main St, Springfield"
      */
-    @Column({ type: 'varchar', length: 255, nullable: false })
-    location!: string;
+    @Column({ type: 'varchar', length: 255 })
+    locationName!: string
+
+    @Column({ type: 'numeric' })
+    x!: number
+
+    @Column({ type: 'numeric' })
+    y!: number
 
     /** 
      * Photo URLs of the building

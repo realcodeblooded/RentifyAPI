@@ -24,7 +24,10 @@ export const userSchema = yup.object({
     .email('Invalid email format'),
   phone: yup
     .string()
-    .required('Phone number is required'),
+    .required('Phone number is required')
+    .min(10, 'Phone number must be at least 10 characters!')
+    .max(15, "Phone number cannot be more than 15 characters!")
+    .matches(/^[0-9]+$/, 'Phone number is not valid'),
   password: yup
     .string()
     .required('Password is required!')
@@ -42,7 +45,9 @@ export const userSchema = yup.object({
     .number()
     .required('ID number is required')
     .positive('ID number must be positive')
-    .integer('ID number must be an integer'),
+    .integer('ID number must be an integer')
+    .min(9999999, "ID number must be at least 7 characters")
+    .max(9999999999, "ID number cannot be greater than 10 characters"),
   nextOfKins: yup
     .array()
     .of(nextOfKinSchema)

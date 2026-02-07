@@ -72,7 +72,7 @@ export class User extends BaseEntity {
      * User's phone number
      * @example "+254712345678"
      */
-    @Column({ length: 20 })
+    @Column({ length: 15 })
     @IsNotEmpty({ message: 'Phone number is required' })
     @IsPhoneNumber('KE', { message: 'Phone number must be a valid Kenyan phone number' })
     phone!: string;
@@ -100,7 +100,7 @@ export class User extends BaseEntity {
      */
 
     @ManyToOne(() => Role, role => role.users, { nullable: false })
-    @JoinColumn({name:'roleId'})
+    @JoinColumn({ name: 'roleId' })
     role!: Role;
 
     /** 
