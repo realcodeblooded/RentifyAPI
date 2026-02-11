@@ -3,6 +3,7 @@ import { Router } from "express";
 import { Server } from "../classes/server";
 import { healthRoutes } from "./health";
 import { userRoutes } from "./user.Routes";
+import { buildingRoutes } from "./building.Routes";
 
 /**
  * Main application routes configuration class.
@@ -10,7 +11,7 @@ import { userRoutes } from "./user.Routes";
  * Centralizes all route definitions and mounts sub-routers for different
  * feature modules. Acts as the primary router that gets mounted to the Express app.
  */
-class Routes  {
+class Routes {
     /** Express router instance for all application routes */
     router: Router;
 
@@ -45,7 +46,8 @@ class Routes  {
     initializeRoutes() {
         // Define your routes here
         this.router.use('/health', healthRoutes.router);
-        this.router.use('/users', userRoutes.router)
+        this.router.use('/users', userRoutes.router);
+        this.router.use('/buildings', buildingRoutes.router);
     }
 }
 

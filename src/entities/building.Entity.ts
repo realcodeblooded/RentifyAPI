@@ -1,11 +1,11 @@
-import { Column, CreateDateColumn, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { BuildingType } from "../types/building.Types";
 import { Tenancy } from "./tenancy.Entity";
 import { Unit } from "./unit.Entity";
 import { Amenities } from "./amenities.Entity";
 
 @Entity('building')
-export class Building {
+export class Building extends BaseEntity {
     /**
      * Unique identifier for the building (UUID format)
      */
@@ -49,8 +49,8 @@ export class Building {
     /** 
      * Amenities available in the building
      */
-    @ManyToMany(() => Amenities, amenity => amenity.buildings)
-    amenities!: Amenities[];
+    @ManyToMany(() => Amenities, amenity => amenity.id)
+    amenities!: string[];
 
     /** 
      * Timestamp when the building was created

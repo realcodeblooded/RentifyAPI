@@ -11,7 +11,7 @@ export enum UnitType {
     WHOLE_BUILDING = 'WHOLE_BUILDING',
     GUEST_HOUSE = 'GUEST_HOUSE',
     BASEMENT_SUITE = 'BASEMENT_SUITE',
-    
+
     // Apartment/Storeyed types
     STUDIO = 'STUDIO',
     ONE_BEDROOM = 'ONE_BEDROOM',
@@ -20,9 +20,19 @@ export enum UnitType {
     PENTHOUSE = 'PENTHOUSE',
     LOFT = 'LOFT',
     DUPLEX = 'DUPLEX',
-    
+
     // Commercial
     OFFICE = 'OFFICE',
     RETAIL = 'RETAIL',
     WAREHOUSE = 'WAREHOUSE'
+}
+
+export type BaseBuilding = {
+    buildingName: string,
+    locationName: string
+    x: number
+    y: number
+    photos: Express.Multer.File[]
+    type: BuildingType
+    amenities: string[]
 }
