@@ -1,8 +1,8 @@
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Tenancy } from "./tenancy.Entity";
 
-@Entity('maintenance')
-export class Maintenance {
+@Entity('maintenances')
+export class Maintenances {
     // Maintenance entity definition goes here
     /** 
      * Unique identifier for the maintenance request (UUID format)

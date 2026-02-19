@@ -1,5 +1,5 @@
 import { logger } from "../utils/logger";
-import { User } from "../entities/user.Entity";
+import { User } from "../entities/users.Entity";
 import { BaseUserDetails } from "../types/user.Types";
 import { BaseResponse } from "../types/response.types";
 import { authClass } from "./auth.Class";
@@ -28,6 +28,18 @@ class UserClass {
         } catch (error) {
             logger.error("Error adding user:", error);
             return { success: false, message: "Error adding user", data: error };
+        }
+    };
+
+    // Returns all active users
+    async fetchUsers(): Promise<BaseResponse> {
+        try {
+            const users = await User.find();
+
+            return { success: true, message: 'Success!', data: users };
+        } catch (error) {
+            logger.error(error);
+            return { success: false, message: "An error occured while fetching users", data: error };
         }
     }
 }

@@ -3,3 +3,9 @@ export enum RoleKey {
     TENANT = 'TENANT',
     MANAGER = 'MANAGER',
 }
+
+export type BaseRole = {
+    key: RoleKey;
+    name: string;
+    description: string;
+} 

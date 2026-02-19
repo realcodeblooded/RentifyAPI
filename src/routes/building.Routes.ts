@@ -13,7 +13,8 @@ class BuildingRoutes {
     }
 
     initializeRoutes() {
-        this.router.post('/CreateBuilding', selfUpload.array("photos"), this.controller.addBuilding);
+        this.router.post('/AddBuilding', selfUpload.array("photos"), this.controller.addBuilding);
+        this.router.get('/FetchBuildings', this.controller.fetchbuildings);
     }
 };
 

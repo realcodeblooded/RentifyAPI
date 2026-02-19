@@ -41,7 +41,11 @@ export const buildingSchema = yup.object({
     photos: yup
         .array()
         .of(photoSchema)
-        .required('At least one building photo is required'),
+    /**
+     * Uncomment to make it required
+     */
+    // .required('At least one building photo is required')
+    ,
     type: yup
         .string()
         .required('Building type is required!')

@@ -1,9 +1,9 @@
-import { getVersionInfo } from "../config/version";
 import { Router } from "express";
-import { Server } from "../classes/server";
 import { healthRoutes } from "./health";
 import { userRoutes } from "./user.Routes";
 import { buildingRoutes } from "./building.Routes";
+import { unitRoutes } from "./unit.Routes";
+import { authRoutes } from "./auth.Routes";
 
 /**
  * Main application routes configuration class.
@@ -43,11 +43,13 @@ class Routes {
      * // this.router.use('/users', userRoutes.router);
      * // this.router.use('/auth', authRoutes.router);
      */
-    initializeRoutes() {
+    initializeRoutes(): void {
         // Define your routes here
         this.router.use('/health', healthRoutes.router);
         this.router.use('/users', userRoutes.router);
         this.router.use('/buildings', buildingRoutes.router);
+        this.router.use('/units', unitRoutes.router);
+        this.router.use('/auth', authRoutes.router);
     }
 }
 

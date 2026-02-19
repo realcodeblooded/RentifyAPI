@@ -25,4 +25,23 @@ export class BuildingController {
             return res.status(500).json({ error });
         }
     }
+
+    async fetchbuildings(req: Request, res: Response) {
+        try {
+            const buildings = await buildingClass.fetchBuildings();
+
+            if (!buildings.success) {
+                return res.status(404).json({
+                    ...buildings
+                })
+            }
+
+            return res.status(200).json({
+                ...buildings
+            })
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json({ error })
+        }
+    }
 }

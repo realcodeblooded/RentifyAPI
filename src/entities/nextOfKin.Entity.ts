@@ -1,6 +1,6 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { User } from "./user.Entity";
-import { Length,IsString, IsNotEmpty, IsPhoneNumber, IsEnum } from "class-validator";
+import { User } from "./users.Entity";
+import { Length, IsString, IsNotEmpty, IsPhoneNumber, IsEnum } from "class-validator";
 import { NextOfKinRelationship } from "../types/user.Types";
 
 @Entity('next_of_kin')

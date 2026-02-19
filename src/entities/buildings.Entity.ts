@@ -1,11 +1,11 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { BuildingType } from "../types/building.Types";
 import { Tenancy } from "./tenancy.Entity";
-import { Unit } from "./unit.Entity";
+import { Unit } from "./units.Entity";
 import { Amenities } from "./amenities.Entity";
 
-@Entity('building')
-export class Building extends BaseEntity {
+@Entity('buildings')
+export class Buildings extends BaseEntity {
     /**
      * Unique identifier for the building (UUID format)
      */
@@ -36,7 +36,7 @@ export class Building extends BaseEntity {
      * Photo URLs of the building
      * @example ["http://example.com/photo1.jpg", "http://example.com/photo2.jpg"]
      */
-    @Column({ type: 'json' })
+    @Column({ type: 'json', default: null })
     photos!: string[];
 
     /** 

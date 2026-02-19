@@ -1,6 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany } from "typeorm";
-import { Building } from "./building.Entity";
-import { User } from "./user.Entity";
+import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany, BaseEntity, JoinColumn } from "typeorm";
+import { Buildings } from "./buildings.Entity";
+import { User } from "./users.Entity";
 import { Tenancy } from "./tenancy.Entity";
 import { UnitType } from "../types/building.Types";
 import { IsEnum } from "class-validator";
@@ -11,7 +11,7 @@ export enum UnitStatus {
 }
 
 @Entity('units')
-export class Unit {
+export class Unit extends BaseEntity {
     /**
      * Unique identifier for the unit (UUID format)
      */
@@ -32,13 +32,17 @@ export class Unit {
     @Column({ type: 'int' })
     floor!: number;
 
+    @Column({ name: 'buildingId', nullable: false })
+    buildingId!: string;
+
     /**
      * Building this unit belongs to
      */
-    @ManyToOne(() => Building, building => building.units, { 
-        onDelete: 'CASCADE' 
+    @ManyToOne(() => Buildings, building => building.units, {
+        onDelete: 'CASCADE'
     })
-    building!: Building;
+    @JoinColumn({ name: 'buildingId' })
+    building!: Buildings;
 
     /**
      * Current tenant of the unit (nullable for vacant units)

@@ -32,7 +32,10 @@ export type BaseBuilding = {
     locationName: string
     x: number
     y: number
-    photos: Express.Multer.File[]
+    /*
+    * Uncomment to add photos
+    */
+    // photos: Express.Multer.File[]
     type: BuildingType
     amenities: string[]
 }

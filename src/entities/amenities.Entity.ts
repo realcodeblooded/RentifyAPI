@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Building } from "./building.Entity";
+import { Buildings } from "./buildings.Entity";
 
 @Entity("amenities")
 export class Amenities {
@@ -10,6 +10,6 @@ export class Amenities {
     @Column()
     amenityName!: string;
 
-    @ManyToMany(() => Building, building => building.amenities)
-    buildings!: Building[];
+    @ManyToMany(() => Buildings, building => building.amenities)
+    buildings!: Buildings[];
 }

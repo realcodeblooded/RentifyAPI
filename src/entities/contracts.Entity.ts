@@ -1,10 +1,10 @@
 import { IsNumber } from "class-validator";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Tenancy } from "./tenancy.Entity";
-import { User } from "./user.Entity";
+import { User } from "./users.Entity";
 
 @Entity('contracts')
-export class Contract {
+export class Contracts {
     // Contract entity definition goes here
     /**
      * Unique identifier for the contract (UUID format)
@@ -22,7 +22,7 @@ export class Contract {
      * Amount to be paid under the contract
      */
     @Column({ type: 'decimal', precision: 12, scale: 2, nullable: false })
-    @IsNumber({},{ message: 'Amount must be a number' })
+    @IsNumber({}, { message: 'Amount must be a number' })
     amount!: number;
 
     /** 
@@ -60,7 +60,7 @@ export class Contract {
 
     /**
      * Is the contract currently active
-     */ 
+     */
     @Column({ type: 'boolean', default: true })
     isActive!: boolean;
 
