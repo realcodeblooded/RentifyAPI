@@ -4,6 +4,7 @@ import { userRoutes } from "./user.Routes";
 import { buildingRoutes } from "./building.Routes";
 import { unitRoutes } from "./unit.Routes";
 import { authRoutes } from "./auth.Routes";
+import { authenticate } from "@/middlewares/auth.middleware";
 
 /**
  * Main application routes configuration class.
@@ -46,9 +47,9 @@ class Routes {
     initializeRoutes(): void {
         // Define your routes here
         this.router.use('/health', healthRoutes.router);
-        this.router.use('/users', userRoutes.router);
-        this.router.use('/buildings', buildingRoutes.router);
-        this.router.use('/units', unitRoutes.router);
+        this.router.use('/users', authenticate, userRoutes.router);
+        this.router.use('/buildings', authenticate, buildingRoutes.router);
+        this.router.use('/units', authenticate, unitRoutes.router);
         this.router.use('/auth', authRoutes.router);
     }
 }
