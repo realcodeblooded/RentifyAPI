@@ -112,6 +112,13 @@ export class User extends BaseEntity {
     @OneToMany(() => NextOfKin, nextOfKin => nextOfKin.user, { cascade: true, eager: true })
     nextOfKins!: NextOfKin[];
 
+    @Column({ nullable: true, length: 500 })
+    refreshToken!: string;
+
+    @Column({ nullable: true, type: 'timestamp' })
+    refreshTokenExpiry!: Date;
+
+
     /**
      * Timestamp when the user record was created
      * Automatically managed by TypeORM

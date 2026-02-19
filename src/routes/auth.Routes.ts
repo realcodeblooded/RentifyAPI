@@ -1,22 +1,20 @@
-import { AuthController } from "../controllers/auth.Controller";
 import { Router } from "express";
+import { AuthController } from "@/controllers/auth.Controller";
 
-class AuthRoutes {
-    // Express router, Controller
-    router: Router
-    private controller: AuthController
-
-    // Initialize methods
+class AuthRoute {
+    router: Router;
+    authController: AuthController;
     constructor() {
-        this.controller = new AuthController;
         this.router = Router();
-        this.initializeRoutes();
+        this.authController = new AuthController();
+        this.routes();
     }
-
-    // Define routes
-    private initializeRoutes() {
-        this.router.post('/AddRole', this.controller.addRole);
+    routes(): void {
+        this.router.post("/login", this.authController.login);
+        this.router.post("/refresh", this.authController.refreshToken);
+        this.router.post("/logout", this.authController.logOut);
+        this.router.post('/AddRole', this.authController.addRole);
     }
 }
 
-export const authRoutes = new AuthRoutes();
+export const authRoutes = new AuthRoute();
