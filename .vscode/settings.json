@@ -1,0 +1,23 @@
+{
+    "dbcode.connections": [
+        {
+            "connectionId": "JM3JW5bYY4Sg-jssJ7oAL",
+            "name": "Rentify",
+            "driver": "postgres",
+            "connectionType": "host",
+            "host": "localhost",
+            "port": 5432,
+            "ssl": false,
+            "authMethod": "password",
+            "username": "postgres",
+            "password": "",
+            "savePassword": "secretStorage",
+            "database": "RentifyDb",
+            "readOnly": false,
+            "role": "development",
+            "postConnectionSqlType": "inline",
+            "connectionTimeout": 30,
+            "pinnedConnectionTimeout": "0"
+        }
+    ]
+}
