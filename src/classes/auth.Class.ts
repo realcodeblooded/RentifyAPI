@@ -31,6 +31,48 @@ class AuthClass {
         }
     }
 
+    public async userExistsByIdNumber(idNumber: number): Promise<boolean> {
+        try {
+            // Verify Id number is not empty.
+            if (!idNumber) {
+                return false;
+            }
+
+            // Find one user with the id number
+            const user = await User.findOneBy({ idNumber: idNumber });
+
+            // Return the user details (currently returns false) when found and null when not found
+            if (!user) {
+                return false;
+            }
+            return true;
+        } catch (error) {
+            logger.error(error);
+            return false;
+        }
+    }
+
+    public async userExistsByEmail(email: string): Promise<boolean> {
+        try {
+            // Verify email number is not empty.
+            if (!email || email === "") {
+                return false;
+            }
+
+            // Find one user with the email
+            const user = await User.findOneBy({ email: email });
+
+            // Return the user details (curently returns false) when found and null when not found
+            if (!user) {
+                return false;
+            }
+            return true;
+        } catch (error) {
+            logger.error(error);
+            return false;
+        }
+    }
+
     /**
      * Returns the hash value of a given string
      * @param password 
@@ -52,6 +94,12 @@ class AuthClass {
      */
     async addRole(role: BaseRole): Promise<BaseResponse> {
         try {
+            // check if role key exists
+            const roleExists = await this.getRoleId(role.key);
+
+            // Return error for existing role key
+            if (roleExists) return { success: false, message: "A role with that key already exists", data: null };
+
             const newRole = Roles.create(role);
 
             // Save the role.

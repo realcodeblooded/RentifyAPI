@@ -16,7 +16,7 @@ export class Buildings extends BaseEntity {
      * Name of the building
      * @example "Sunset Apartments"
      */
-    @Column({ unique: true, length: 100, nullable: false, type: 'varchar' })
+    @Column({ length: 100, nullable: false, type: 'varchar' })
     buildingName!: string;
 
     /** 

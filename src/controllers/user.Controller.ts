@@ -1,5 +1,5 @@
 import { userClass } from "../classes/user.Class";
-import { BaseUserDetails } from "@/types/user.Types";
+import { BaseUserDetails, CreateUserRequest } from "@/types/user.Types";
 import { logger } from "../utils/logger";
 import { Request, Response } from "express";
 import { RoleKey } from "../types/role.Types";
@@ -7,7 +7,7 @@ import { RoleKey } from "../types/role.Types";
 export class UserController {
     async addManager(req: Request, res: Response) {
         try {
-            const userData: BaseUserDetails = req.body;
+            const userData: CreateUserRequest = req.body;
 
             const isUserAdded = await userClass.addUser({ ...userData }, RoleKey.MANAGER);
 
@@ -27,7 +27,7 @@ export class UserController {
 
     async addTenant(req: Request, res: Response) {
         try {
-            const userData: BaseUserDetails = req.body;
+            const userData: CreateUserRequest = req.body;
 
             const isUserAdded = await userClass.addUser({ ...userData }, RoleKey.TENANT);
 
@@ -47,7 +47,7 @@ export class UserController {
 
     async addAdmin(req: Request, res: Response) {
         try {
-            const userData: BaseUserDetails = req.body;
+            const userData: CreateUserRequest = req.body;
 
             const isUserAdded = await userClass.addUser({ ...userData }, RoleKey.ADMIN);
 
