@@ -1,13 +1,19 @@
-import { RoleKey } from "./role.Types";
+export interface CreateUserRequest extends BaseUserDetails {
+    password: string;
+    idNumber: number;
+    nextOfKins: NextOfKinDetails[];
+}
 
-export type BaseUserDetails = {
+export interface UserResponse extends BaseUserDetails {
+    id: string;
+    idNumber: string;
+}
+
+export interface BaseUserDetails {
     firstName: string;
     lastName: string;
     email: string;
     phone: string;
-    password: string;
-    idNumber: number;
-    nextOfKins: NextOfKinDetails[]
 };
 
 export type NextOfKinDetails = {

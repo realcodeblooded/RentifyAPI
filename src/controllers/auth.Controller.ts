@@ -1,11 +1,34 @@
-import { Request, Response } from "express";
-import { logger } from "../utils/logger";
-import { BaseUserDetails } from "@/types/user.Types";
-import { authClass } from "@/classes/auth.Class";
+import { logger } from "@/utils/logger";
+import { authClass } from "../classes/auth.Class"
+import { BaseRole } from "../types/role.Types";
+import { Request, Response } from "express"
 import { AuthRequest } from "@/types/auth.Types";
-import { BaseResponse } from "@/types/response.types";
 
 export class AuthController {
+    async addRole(req: Request, res: Response) {
+        try {
+            // Get the role details from the reequest body
+            const newRole: BaseRole = req.body;
+            // Attempt to save the role to the DB
+            const isRoleAdded = await authClass.addRole(newRole);
+
+            if (!isRoleAdded.success) {
+                return res.status(400).json({
+                    ...isRoleAdded
+                })
+            }
+
+            return res.status(200).json({
+                ...isRoleAdded
+            })
+
+        } catch (error) {
+            res.status(500).json({
+                error
+            })
+        }
+    };
+
     public async login(req: Request, res: Response): Promise<any> {
         try {
             const userData: AuthRequest = req.body;
@@ -76,4 +99,4 @@ export class AuthController {
             })
         }
     }
-}
+};

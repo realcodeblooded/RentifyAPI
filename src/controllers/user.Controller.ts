@@ -1,5 +1,5 @@
 import { userClass } from "../classes/user.Class";
-import { BaseUserDetails } from "@/types/user.Types";
+import { BaseUserDetails, CreateUserRequest } from "@/types/user.Types";
 import { logger } from "../utils/logger";
 import { Request, Response } from "express";
 import { RoleKey } from "../types/role.Types";
@@ -7,11 +7,11 @@ import { RoleKey } from "../types/role.Types";
 export class UserController {
     async addManager(req: Request, res: Response) {
         try {
-            const userData: BaseUserDetails = req.body;
+            const userData: CreateUserRequest = req.body;
 
-            const isUserAdded = await userClass.addUser({...userData }, RoleKey.MANAGER);
+            const isUserAdded = await userClass.addUser({ ...userData }, RoleKey.MANAGER);
 
-            if(!isUserAdded.success) {
+            if (!isUserAdded.success) {
                 return res.status(400).json({ isUserAdded });
             }
 
@@ -27,11 +27,11 @@ export class UserController {
 
     async addTenant(req: Request, res: Response) {
         try {
-            const userData: BaseUserDetails = req.body;
+            const userData: CreateUserRequest = req.body;
 
-            const isUserAdded = await userClass.addUser({...userData }, RoleKey.TENANT);
+            const isUserAdded = await userClass.addUser({ ...userData }, RoleKey.TENANT);
 
-            if(!isUserAdded.success) {
+            if (!isUserAdded.success) {
                 return res.status(400).json({ isUserAdded });
             }
 
@@ -47,11 +47,11 @@ export class UserController {
 
     async addAdmin(req: Request, res: Response) {
         try {
-            const userData: BaseUserDetails = req.body;
+            const userData: CreateUserRequest = req.body;
 
-            const isUserAdded = await userClass.addUser({...userData }, RoleKey.ADMIN);
+            const isUserAdded = await userClass.addUser({ ...userData }, RoleKey.ADMIN);
 
-            if(!isUserAdded.success) {
+            if (!isUserAdded.success) {
                 return res.status(400).json({ isUserAdded });
             }
 
@@ -64,4 +64,20 @@ export class UserController {
             })
         }
     };
+
+    async fetchusers(req: Request, res: Response) {
+        try {
+            const users = await userClass.fetchUsers();
+
+            return res.status(200).json({
+                ...users
+            })
+        } catch (error) {
+            logger.error(error)
+            return res.status(500).json({
+                message: 'An unexpected error occurred when fetching users',
+                error: error
+            });
+        }
+    }
 };

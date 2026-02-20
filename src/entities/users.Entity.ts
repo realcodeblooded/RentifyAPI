@@ -20,7 +20,7 @@ import {
     Length,
     Min
 } from "class-validator";
-import { Role } from "./role.Entity";
+import { Roles } from "./roles.Entity";
 import { Tenancy } from "./tenancy.Entity";
 import { NextOfKin } from "./nextOfKin.Entity";
 
@@ -99,9 +99,9 @@ export class User extends BaseEntity {
      * Many users can have one role
      */
 
-    @ManyToOne(() => Role, role => role.users, { nullable: false })
+    @ManyToOne(() => Roles, role => role.users, { nullable: false })
     @JoinColumn({ name: 'roleId' })
-    role!: Role;
+    role!: Roles;
 
     /** 
      * Tenancies associated with the user

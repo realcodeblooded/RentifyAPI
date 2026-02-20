@@ -1,17 +1,26 @@
-import { User } from "@/entities/user.Entity";
-import { Role } from "../entities/role.Entity";
-import { RoleKey } from "../types/role.Types";
+import { BaseResponse } from "../types/response.types";
+import { Roles } from "../entities/roles.Entity";
+import { BaseRole, RoleKey } from "../types/role.Types";
 import { logger } from "../utils/logger";
 import bcrypt from "bcryptjs";
-import { BaseUserDetails } from "@/types/user.Types";
 import { jwtService } from "@/services/jwt.service";
 import { AuthResponse } from "@/types/auth.Types";
-import { BaseResponse } from "@/types/response.types";
+import { User } from "@/entities/users.Entity";
 
+
+/**
+ * Main Authentication class
+ */
 class AuthClass {
+    /**
+     * Gets the id of the role
+     * @param roleKey
+     * @type RoleKey
+     * @returns Promise<string | null>
+     */
     async getRoleId(roleKey: RoleKey): Promise<string | null> {
         try {
-            const role = await Role.findOne({ where: { key: roleKey } });
+            const role = await Roles.findOne({ where: { key: roleKey } });
 
             if (!role) return null;
 
@@ -22,12 +31,83 @@ class AuthClass {
         }
     }
 
+    public async userExistsByIdNumber(idNumber: number): Promise<boolean> {
+        try {
+            // Verify Id number is not empty.
+            if (!idNumber) {
+                return false;
+            }
+
+            // Find one user with the id number
+            const user = await User.findOneBy({ idNumber: idNumber });
+
+            // Return the user details (currently returns false) when found and null when not found
+            if (!user) {
+                return false;
+            }
+            return true;
+        } catch (error) {
+            logger.error(error);
+            return false;
+        }
+    }
+
+    public async userExistsByEmail(email: string): Promise<boolean> {
+        try {
+            // Verify email number is not empty.
+            if (!email || email === "") {
+                return false;
+            }
+
+            // Find one user with the email
+            const user = await User.findOneBy({ email: email });
+
+            // Return the user details (curently returns false) when found and null when not found
+            if (!user) {
+                return false;
+            }
+            return true;
+        } catch (error) {
+            logger.error(error);
+            return false;
+        }
+    }
+
+    /**
+     * Returns the hash value of a given string
+     * @param password 
+     * @param rounds 
+     * @returns Promise<string | null>
+     */
     async hashPassword(password: string, rounds?: number): Promise<string> {
         try {
             return await bcrypt.hash(password, rounds || 10);
         } catch (error) {
             logger.error(error);
             throw Error(`An error occurred while hashing you password: ${error}`);
+        }
+    }
+    /**
+     * Add a defined role into  the DB
+     * @param role @type BaseRole
+     * @returns 
+     */
+    async addRole(role: BaseRole): Promise<BaseResponse> {
+        try {
+            // check if role key exists
+            const roleExists = await this.getRoleId(role.key);
+
+            // Return error for existing role key
+            if (roleExists) return { success: false, message: "A role with that key already exists", data: null };
+
+            const newRole = Roles.create(role);
+
+            // Save the role.
+            const isRoleCreated = await newRole.save();
+
+            return { success: false, message: 'Role created successfully!', data: isRoleCreated };
+        } catch (error) {
+            return { success: false, message: 'An unexpected error occurred while adding a new role!', data: error };
         }
     }
     async login(email: string, password: string): Promise<BaseResponse> {

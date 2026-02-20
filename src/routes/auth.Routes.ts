@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { AuthController } from "../controllers/auth.controller";
+import { AuthController } from "@/controllers/auth.Controller";
 
 class AuthRoute {
     router: Router;
@@ -13,7 +13,8 @@ class AuthRoute {
         this.router.post("/login", this.authController.login);
         this.router.post("/refresh", this.authController.refreshToken);
         this.router.post("/logout", this.authController.logOut);
+        this.router.post('/AddRole', this.authController.addRole);
     }
 }
 
-export const authRoute = new AuthRoute();
+export const authRoutes = new AuthRoute();

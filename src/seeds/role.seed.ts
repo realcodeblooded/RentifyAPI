@@ -1,5 +1,5 @@
 import { AppDataSource } from "../config/database";
-import { Role } from "../entities/role.Entity";
+import { Roles } from "../entities/roles.Entity";
 import { RoleKey } from "../types/role.Types";
 import { logger } from "../utils/logger";
 
@@ -8,7 +8,7 @@ const seedRoles = async () => {
         await AppDataSource.initialize();
         logger.info("Database connected for seeding...");
 
-        const roleRepository = AppDataSource.getRepository(Role);
+        const roleRepository = AppDataSource.getRepository(Roles);
 
         const rolesToSeed = [
             { key: RoleKey.ADMIN, name: "Administrator", description: "System Administrator with full access", isSystemDefault: true },

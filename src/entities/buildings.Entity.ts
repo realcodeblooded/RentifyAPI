@@ -1,11 +1,11 @@
-import { Column, CreateDateColumn, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { BuildingType } from "../types/building.Types";
 import { Tenancy } from "./tenancy.Entity";
-import { Unit } from "./unit.Entity";
+import { Unit } from "./units.Entity";
 import { Amenities } from "./amenities.Entity";
 
-@Entity('building')
-export class Building {
+@Entity('buildings')
+export class Buildings extends BaseEntity {
     /**
      * Unique identifier for the building (UUID format)
      */
@@ -16,7 +16,7 @@ export class Building {
      * Name of the building
      * @example "Sunset Apartments"
      */
-    @Column({ unique: true, length: 100, nullable: false, type: 'varchar' })
+    @Column({ length: 100, nullable: false, type: 'varchar' })
     buildingName!: string;
 
     /** 
@@ -36,7 +36,7 @@ export class Building {
      * Photo URLs of the building
      * @example ["http://example.com/photo1.jpg", "http://example.com/photo2.jpg"]
      */
-    @Column({ type: 'json' })
+    @Column({ type: 'json', default: null })
     photos!: string[];
 
     /** 
@@ -49,8 +49,8 @@ export class Building {
     /** 
      * Amenities available in the building
      */
-    @ManyToMany(() => Amenities, amenity => amenity.buildings)
-    amenities!: Amenities[];
+    @ManyToMany(() => Amenities, amenity => amenity.id)
+    amenities!: string[];
 
     /** 
      * Timestamp when the building was created

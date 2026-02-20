@@ -1,10 +1,10 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn , CreateDateColumn, BaseEntity} from "typeorm";
-import { User } from "./user.Entity";
-import { RoleKey } from "..//types/role.Types";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn, CreateDateColumn, BaseEntity } from "typeorm";
+import { User } from "./users.Entity";
+import { RoleKey } from "../types/role.Types";
 import { IsEnum, IsNotEmpty } from "class-validator";
 
 @Entity('roles')
-export class Role extends BaseEntity {
+export class Roles extends BaseEntity {
     /**
      * Unique identifier for the role (UUID format)
      */
@@ -15,8 +15,8 @@ export class Role extends BaseEntity {
      * Key of the role
      * @example "ADMIN"
      */
-    @Column({ type: 'enum', unique: true, enum: RoleKey, default: RoleKey.TENANT })
-    @IsNotEmpty({ message: 'Role key is required'})
+    @Column({ type: 'enum', unique: true, enum: RoleKey })
+    @IsNotEmpty({ message: 'Role key is required' })
     key!: RoleKey;
 
     /** 
@@ -24,7 +24,7 @@ export class Role extends BaseEntity {
      * @example "Administrator"
      */
     @Column({ length: 100 })
-    @IsNotEmpty({ message: 'Role key is required'})
+    @IsNotEmpty({ message: 'Role key is required' })
     name!: string;
 
     /** 
@@ -44,7 +44,7 @@ export class Role extends BaseEntity {
      * Indicates if the role is a system default role
      * @example false
      */
-    @Column({type: 'boolean', default: false})
+    @Column({ type: 'boolean', default: false })
     isSystemDefault!: boolean;
 
     /** 

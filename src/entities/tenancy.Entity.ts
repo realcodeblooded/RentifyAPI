@@ -1,18 +1,18 @@
-import { 
-    Entity, 
-    PrimaryGeneratedColumn, 
-    ManyToOne, 
-    CreateDateColumn, 
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    ManyToOne,
+    CreateDateColumn,
     DeleteDateColumn,
     ManyToMany,
     OneToMany,
     UpdateDateColumn
 } from "typeorm";
-import { Building } from "./building.Entity";
-import { Unit } from "./unit.Entity";
-import { User } from "./user.Entity";
-import { Maintenance } from "./maintenance.Entity";
-import { Contract } from "./contract.Entity";
+import { Buildings } from "./buildings.Entity";
+import { Unit } from "./units.Entity";
+import { User } from "./users.Entity";
+import { Maintenances } from "./maintenances.Entity";
+import { Contracts } from "./contracts.Entity";
 
 @Entity('tenancies')
 export class Tenancy {
@@ -25,16 +25,16 @@ export class Tenancy {
     /**
      * Building where the tenancy is located
      */
-    @ManyToOne(() => Building, building => building.tenancies, { 
+    @ManyToOne(() => Buildings, building => building.tenancies, {
         onDelete: 'CASCADE',
         eager: true
     })
-    building!: Building;
+    building!: Buildings;
 
     /**
      * Unit being rented
      */
-    @ManyToOne(() => Unit, unit => unit.tenancies, { 
+    @ManyToOne(() => Unit, unit => unit.tenancies, {
         onDelete: 'CASCADE',
         eager: true
     })
@@ -43,19 +43,19 @@ export class Tenancy {
     /**
      * Tenant (user) renting the unit
      */
-    @ManyToOne(() => User, user => user.tenancies, { 
+    @ManyToOne(() => User, user => user.tenancies, {
         onDelete: 'RESTRICT'
     })
     tenant!: User;
 
-    @OneToMany(() => Contract, contract => contract.tenancy, { nullable: false })
-    contracts!: Contract[];
+    @OneToMany(() => Contracts, contract => contract.tenancy, { nullable: false })
+    contracts!: Contracts[];
 
     /** 
      * Maintenance requests associated with this tenancy
      */
-    @ManyToMany(() => Maintenance, maintenance => maintenance.tenancies)
-    maintenanceRequests!: Maintenance[];
+    @ManyToMany(() => Maintenances, maintenance => maintenance.tenancies)
+    maintenanceRequests!: Maintenances[];
 
     /**
      * When the tenancy started
