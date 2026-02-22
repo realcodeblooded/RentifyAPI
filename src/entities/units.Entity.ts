@@ -1,7 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany, BaseEntity, JoinColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany, BaseEntity, JoinColumn, OneToOne } from "typeorm";
 import { Buildings } from "./buildings.Entity";
 import { User } from "./users.Entity";
-import { Tenancy } from "./tenancy.Entity";
+import { Tenancies } from "./tenancy.Entity";
 import { UnitType } from "../types/building.Types";
 import { IsEnum } from "class-validator";
 
@@ -31,6 +31,10 @@ export class Unit extends BaseEntity {
      */
     @Column({ type: 'int' })
     floor!: number;
+
+    /**
+     * Join column  
+     */
 
     @Column({ name: 'buildingId', nullable: false })
     buildingId!: string;
@@ -75,8 +79,8 @@ export class Unit extends BaseEntity {
     /**
      * Tenancy history for this unit
      */
-    @OneToMany(() => Tenancy, tenancy => tenancy.unit)
-    tenancies!: Tenancy[];
+    @OneToOne(() => Tenancies, tenancy => tenancy.unit)
+    tenancies!: Tenancies[];
 
     /**
      * Computed status based on whether unit has a tenant
