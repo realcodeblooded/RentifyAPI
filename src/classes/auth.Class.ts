@@ -105,7 +105,7 @@ class AuthClass {
             // Save the role.
             const isRoleCreated = await newRole.save();
 
-            return { success: false, message: 'Role created successfully!', data: isRoleCreated };
+            return { success: true, message: 'Role created successfully!', data: isRoleCreated };
         } catch (error) {
             return { success: false, message: 'An unexpected error occurred while adding a new role!', data: error };
         }

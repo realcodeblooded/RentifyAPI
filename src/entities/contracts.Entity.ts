@@ -1,6 +1,6 @@
 import { IsNumber } from "class-validator";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Tenancy } from "./tenancy.Entity";
+import { Tenancies } from "./tenancy.Entity";
 import { User } from "./users.Entity";
 
 @Entity('contracts')
@@ -15,8 +15,8 @@ export class Contracts {
     /** 
      * Tenancy associated with the contract
      */
-    @ManyToOne(() => Tenancy, (tenancy) => tenancy.contracts, { nullable: false })
-    tenancy!: Tenancy;
+    @ManyToOne(() => Tenancies, (tenancy) => tenancy.contracts, { nullable: false })
+    tenancy!: Tenancies;
 
     /** 
      * Amount to be paid under the contract

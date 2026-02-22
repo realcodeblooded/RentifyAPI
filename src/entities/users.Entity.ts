@@ -21,7 +21,7 @@ import {
     Min
 } from "class-validator";
 import { Roles } from "./roles.Entity";
-import { Tenancy } from "./tenancy.Entity";
+import { Tenancies } from "./tenancy.Entity";
 import { NextOfKin } from "./nextOfKin.Entity";
 
 /**
@@ -72,7 +72,7 @@ export class User extends BaseEntity {
      * User's phone number
      * @example "+254712345678"
      */
-    @Column({ length: 15 })
+    @Column({ length: 20 })
     @IsNotEmpty({ message: 'Phone number is required' })
     @IsPhoneNumber('KE', { message: 'Phone number must be a valid Kenyan phone number' })
     phone!: string;
@@ -106,8 +106,8 @@ export class User extends BaseEntity {
     /** 
      * Tenancies associated with the user
      */
-    @OneToMany(() => Tenancy, tenancy => tenancy.tenant)
-    tenancies!: Tenancy[];
+    @OneToMany(() => Tenancies, tenancy => tenancy.tenant)
+    tenancies!: Tenancies[];
 
     @OneToMany(() => NextOfKin, nextOfKin => nextOfKin.user, { cascade: true, eager: true })
     nextOfKins!: NextOfKin[];

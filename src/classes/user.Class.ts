@@ -66,7 +66,7 @@ class UserClass {
 
             const maskOptions = {
                 maskWith: "*",
-                unmaskedStartDigits: 5,
+                unmaskedStartDigits: 9,
                 unmaskedEndDigits: 1
             };
 
