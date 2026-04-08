@@ -26,13 +26,18 @@ export class Tenancies extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
+    @Column({ name: 'buildingId' })
+    buildingId!: string;
+
+
     /**
      * Building where the tenancy is located
-     */
+    */
     @ManyToOne(() => Buildings, building => building.tenancies, {
         onDelete: 'CASCADE',
         eager: true
     })
+    @JoinColumn({ name: 'buildingId' })
     building!: Buildings;
 
     @Column({ name: 'unitId' })

@@ -13,6 +13,8 @@ class TenancyRoutes {
 
     private routes() {
         this.router.post('/CreateTenancy', this.controller.addTenancy);
+        this.router.get('/FetchTenancies', this.controller.fetchTenancies);
+        this.router.post('/VacateUnit', this.controller.vacateUnit);
     }
 }
 

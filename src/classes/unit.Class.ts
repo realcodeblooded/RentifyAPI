@@ -7,7 +7,6 @@ class UnitClass {
     async addUnit(unitDetails: BaseUnitDetails): Promise<BaseResponse> {
         try {
             const newUnit = Unit.create(unitDetails);
-            console.log(newUnit)
             newUnit.save();
 
             return { success: true, message: 'Unit added successfully', data: null }
@@ -27,6 +26,8 @@ class UnitClass {
             return { success: false, message: 'An error occured while fetching units.', data: error }
         }
     }
+
+
 }
 
 export const unitClass = new UnitClass();

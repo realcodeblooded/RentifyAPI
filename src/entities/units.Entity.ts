@@ -48,11 +48,14 @@ export class Unit extends BaseEntity {
     @JoinColumn({ name: 'buildingId' })
     building!: Buildings;
 
+    // @Column({ name: 'tenantId' })
+    // tenantId!: string
+
     /**
      * Current tenant of the unit (nullable for vacant units)
      */
-    @ManyToOne(() => User, { nullable: true, onDelete: 'SET NULL' })
-    tenant?: User;
+    @ManyToOne(() => User, { onDelete: 'SET NULL' })
+    tenant?: User | null;
 
     /**
      * Type of the unit

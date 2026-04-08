@@ -76,8 +76,6 @@ class UserClass {
                 unmaskedEndDigits: 1
             }
 
-
-
             // Set response
             const response: UserResponse[] = users.map((user) => {
                 // Mask sensitive data
