@@ -1,6 +1,6 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { BuildingType } from "../types/building.Types";
-import { Tenancy } from "./tenancy.Entity";
+import { Tenancies } from "./tenancy.Entity";
 import { Unit } from "./units.Entity";
 import { Amenities } from "./amenities.Entity";
 
@@ -67,8 +67,8 @@ export class Buildings extends BaseEntity {
     /** 
      * Tenancies associated with the building
      */
-    @OneToMany(() => Tenancy, tenancy => tenancy.building)
-    tenancies!: Tenancy[];
+    @OneToMany(() => Tenancies, tenancy => tenancy.building)
+    tenancies!: Tenancies[];
 
     /** 
      * Units associated with the building

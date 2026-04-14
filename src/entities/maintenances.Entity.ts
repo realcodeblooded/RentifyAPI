@@ -7,8 +7,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Tenancy } from "./tenancy.Entity";
 import { User } from "./users.Entity";
+import { Tenancies } from "./tenancy.Entity";
 
 @Entity("maintenances")
 export class Maintenances {
@@ -22,8 +22,8 @@ export class Maintenances {
   /**
    * Tenancies associated with this maintenance request
    */
-  @ManyToMany(() => Tenancy, (tenancy) => tenancy.maintenanceRequests)
-  tenancies!: Tenancy[];
+  @ManyToMany(() => Tenancies, (tenancy) => tenancy.maintenanceRequests)
+  tenancies!: Tenancies[];
 
   /**
    * Description of the maintenance issue

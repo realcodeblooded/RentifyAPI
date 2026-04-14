@@ -21,7 +21,7 @@ import {
   Min,
 } from "class-validator";
 import { Roles } from "./roles.Entity";
-import { Tenancy } from "./tenancy.Entity";
+import { Tenancies } from "./tenancy.Entity";
 import { NextOfKin } from "./nextOfKin.Entity";
 import { Maintenances } from "./maintenances.Entity";
 
@@ -111,8 +111,8 @@ export class User extends BaseEntity {
   /**
    * Tenancies associated with the user
    */
-  @OneToMany(() => Tenancy, (tenancy) => tenancy.tenant)
-  tenancies!: Tenancy[];
+  @OneToMany(() => Tenancies, (tenancy) => tenancy.tenant)
+  tenancies!: Tenancies[];
 
   /**
    * The users maintenance requests

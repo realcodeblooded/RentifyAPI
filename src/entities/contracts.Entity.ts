@@ -1,10 +1,10 @@
 import { IsNumber } from "class-validator";
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Tenancy } from "./tenancy.Entity";
+import { BaseEntity, Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Tenancies } from "./tenancy.Entity";
 import { User } from "./users.Entity";
 
 @Entity('contracts')
-export class Contracts {
+export class Contracts extends BaseEntity {
     // Contract entity definition goes here
     /**
      * Unique identifier for the contract (UUID format)
@@ -12,18 +12,22 @@ export class Contracts {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
+    @Column({ name: 'tenancyId' })
+    tenancyId!: string
+
     /** 
      * Tenancy associated with the contract
      */
-    @ManyToOne(() => Tenancy, (tenancy) => tenancy.contracts, { nullable: false })
-    tenancy!: Tenancy;
+    @ManyToOne(() => Tenancies, (tenancy) => tenancy.contracts, { nullable: false })
+    @JoinColumn({ name: 'tenancyId' })
+    tenancy!: Tenancies;
 
     /** 
      * Amount to be paid under the contract
      */
     @Column({ type: 'decimal', precision: 12, scale: 2, nullable: false })
-    @IsNumber({}, { message: 'Amount must be a number' })
-    amount!: number;
+    @IsNumber({}, { message: 'Rent must be a number' })
+    rent!: number;
 
     /** 
      * Currency of the amount
@@ -81,16 +85,4 @@ export class Contracts {
      */
     @DeleteDateColumn()
     deletedAt!: Date | null;
-
-    /** 
-     * User who last updated the contract
-     */
-    @ManyToOne(() => User, { nullable: false })
-    updatedBy!: User;
-
-    /** 
-     * User who created the contract
-     */
-    @ManyToOne(() => User, { nullable: false })
-    createdBy!: User;
 }

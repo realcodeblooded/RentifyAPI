@@ -6,7 +6,11 @@ import {
     DeleteDateColumn,
     ManyToMany,
     OneToMany,
-    UpdateDateColumn
+    UpdateDateColumn,
+    BaseEntity,
+    Column,
+    JoinColumn,
+    OneToOne
 } from "typeorm";
 import { Buildings } from "./buildings.Entity";
 import { Unit } from "./units.Entity";
@@ -15,41 +19,55 @@ import { Maintenances } from "./maintenances.Entity";
 import { Contracts } from "./contracts.Entity";
 
 @Entity('tenancies')
-export class Tenancy {
+export class Tenancies extends BaseEntity {
     /**
      * Unique identifier for the tenancy (UUID format)
      */
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
+    @Column({ name: 'buildingId' })
+    buildingId!: string;
+
+
     /**
      * Building where the tenancy is located
-     */
+    */
     @ManyToOne(() => Buildings, building => building.tenancies, {
         onDelete: 'CASCADE',
         eager: true
     })
+    @JoinColumn({ name: 'buildingId' })
     building!: Buildings;
+
+    @Column({ name: 'unitId' })
+    unitId!: string;
 
     /**
      * Unit being rented
      */
-    @ManyToOne(() => Unit, unit => unit.tenancies, {
+    @OneToOne(() => Unit, unit => unit.tenancies, {
         onDelete: 'CASCADE',
         eager: true
     })
+    @JoinColumn({ name: 'unitId' })
     unit!: Unit;
+
+    @Column({ name: 'tenantId', unique: true })
+    tenantId!: string;
 
     /**
      * Tenant (user) renting the unit
      */
     @ManyToOne(() => User, user => user.tenancies, {
-        onDelete: 'RESTRICT'
+        onDelete: 'RESTRICT', eager: true
     })
+    @JoinColumn({ name: 'tenantId' })
     tenant!: User;
 
     @OneToMany(() => Contracts, contract => contract.tenancy, { nullable: false })
     contracts!: Contracts[];
+
 
     /** 
      * Maintenance requests associated with this tenancy

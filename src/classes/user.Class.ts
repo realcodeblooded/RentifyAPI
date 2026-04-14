@@ -66,7 +66,7 @@ class UserClass {
 
             const maskOptions = {
                 maskWith: "*",
-                unmaskedStartDigits: 5,
+                unmaskedStartDigits: 9,
                 unmaskedEndDigits: 1
             };
 
@@ -75,8 +75,6 @@ class UserClass {
                 unmaskedStartDigits: 3,
                 unmaskedEndDigits: 1
             }
-
-
 
             // Set response
             const response: UserResponse[] = users.map((user) => {

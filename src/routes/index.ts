@@ -6,6 +6,7 @@ import { unitRoutes } from "./unit.Routes";
 import { maintenanceRoutes } from "./maintenance.Routes";
 import { authRoutes } from "./auth.Routes";
 import { authenticate } from "@/middlewares/auth.middleware";
+import { tenancyRoutes } from "./tenancy.Routes";
 
 /**
  * Main application routes configuration class.
@@ -52,10 +53,10 @@ class Routes {
     this.router.use("/buildings", authenticate, buildingRoutes.router);
     this.router.use("/units", authenticate, unitRoutes.router);
     this.router.use("/maintenances", authenticate, maintenanceRoutes.router);
+    this.router.use("/tenancies", authenticate, tenancyRoutes.router);
     this.router.use("/auth", authRoutes.router);
   }
 }
-
 /**
  * Singleton instance of Routes.
  *
