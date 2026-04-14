@@ -51,7 +51,7 @@ class Routes {
     this.router.use("/users", userRoutes.router);
     this.router.use("/buildings", authenticate, buildingRoutes.router);
     this.router.use("/units", authenticate, unitRoutes.router);
-    this.router.use("/maintenances", maintenanceRoutes.router);
+    this.router.use("/maintenances", authenticate, maintenanceRoutes.router);
     this.router.use("/auth", authRoutes.router);
   }
 }

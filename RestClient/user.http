@@ -1,0 +1,79 @@
+### Base tenancies url
+@BASE_URL = http://localhost:3000/api/users
+### Replace from ey...
+@AUTH_TOKEN = Bearer {token}
+
+
+POST {{BASE_URL}}/CreateManager
+Content-Type: application/json
+Authorization: {{AUTH_TOKEN}}
+
+{
+    "firstName": "Manager",
+    "lastName": "Maina",
+    "idNumber": "41986887",
+    "phone": "254708530876",
+    "email": "number.doe@app.com",
+    "password": "Test@1234",
+    "nextOfKins": [
+        {
+            "firstName": "Winnie",
+            "lastName": "Maina",
+            "phoneNumber": "+25470853089936",
+            "relationship": "Sibling"
+        },
+        {
+            "firstName": "James",
+            "lastName": "Maina",
+            "phoneNumber": "07085308996",
+            "relationship": "Parent"
+        }
+    ]
+}
+
+### Add tenant
+POST {{BASE_URL}}/CreateTenant
+Content-Type: application/json
+Authorization: {{AUTH_TOKEN}}
+
+{
+    "firstName": "Andy",
+    "lastName": "tenant",
+    "idNumber": "54986887",
+    "phone": "0708630896",
+    "email": "andy.tenant@tenant.com",
+    "password": "Test@1234"
+}
+
+
+### Add admin
+POST {{BASE_URL}}/CreateAdmin
+Content-Type: application/json
+Authorization: {{AUTH_TOKEN}}
+
+{
+    "firstName": "German",
+    "lastName": "Heiss",
+    "idNumber": "229809368",
+    "phone": "0702854946",
+    "email": "German.heiss@another.com",
+    "password": "Test@1234",
+    "nextOfKins": [
+        {
+            "firstName": "Winnie",
+            "lastName": "Maina",
+            "phoneNumber": "07085308996",
+            "relationship": "Sibling"
+        },
+        {
+            "firstName": "James",
+            "lastName": "Maina",
+            "phoneNumber": "07085308996",
+            "relationship": "Parent"
+        }
+    ]
+}
+
+### Fetch users
+GET {{BASE_URL}}/FetchUsers
+Authorization: {{AUTH_TOKEN}}

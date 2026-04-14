@@ -1,0 +1,29 @@
+### Base tenancies url
+@BASE_URL = http://localhost:3000/api/tenancies
+### Replace from ey...
+@AUTH_TOKEN = Bearer {token}
+
+
+POST {{BASE_URL}}/CreateTenancy
+Content-Type: application/json
+Authorization: {{AUTH_TOKEN}}
+
+{
+    "tenantId": "209f3a47-d79e-4573-9273-9d2337760501",
+    "buildingId": "df50800e-dd11-4ae2-a969-5dc4cd811e7a",
+    "unitId": "45bc2c92-d41f-4416-a1ee-f5e9e1e2272d"
+}
+
+
+### Fetch tenancies
+GET {{BASE_URL}}/FetchTenancies
+Authorization: {{AUTH_TOKEN}}
+
+
+### Vacate Unit
+POST {{BASE_URL}}/VacateUnit
+Authorization: {{AUTH_TOKEN}}
+
+{
+    "tenancyId": "000efedf-854c-4978-b148-3f9cd1e69e66"
+}

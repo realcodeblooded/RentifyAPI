@@ -1,0 +1,23 @@
+### Base auth url
+@BASE_URL = http://localhost:3000/api/auth
+### Replace from ey...
+@AUTH_TOKEN = Bearer {token}
+
+// Create a new role
+POST {{BASE_URL}}/AddRole
+Content-Type: application/json
+Authorization: {{AUTH_TOKEN}}
+
+{
+    "key": "MANAGER",
+    "name": "Manager role"
+}
+
+### Login
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "number.doe@app.com",
+    "password": "Test@1234"
+}

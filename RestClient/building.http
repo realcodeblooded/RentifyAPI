@@ -1,0 +1,21 @@
+@BASE_URL = http://localhost:/3000/api/buildings
+@AUTH_TOKEN = Bearer {token}
+
+### Add a new building
+POST http://localhost:3000/api/buildings/AddBuilding
+Content-Type: application/json
+Authorization: {{AUTH_TOKEN}}
+
+
+{
+    "buildingName": "Sunrise Apartments",
+    "locationName": "Nairobi",
+    "x": "1",
+    "y": "2",
+    "type": "STANDALONE"
+}
+
+
+### Fetch All Buildings
+GET http://localhost:3000/api/buildings/FetchBuildings
+Authorization: {{AUTH_TOKEN}}

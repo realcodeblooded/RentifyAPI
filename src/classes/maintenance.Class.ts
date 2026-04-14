@@ -33,7 +33,7 @@ class MaintenanceClass {
       return {
         success: true,
         message: "Maintenance request created successfully.",
-        data: maintenance,
+        data: null,
       };
     } catch (error) {
       logger.error("Error creating maintenance request:", error);

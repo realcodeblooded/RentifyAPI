@@ -1,0 +1,25 @@
+@BASE_URL = http://localhost:3000/api/maintenances
+@AUTH_TOKEN = Bearer {token}
+
+POST {{BASE_URL}}/CreateMaintenanceRequest
+Content-Type: application/json
+Authorization: {{AUTH_TOKEN}}
+
+{
+    "description": "A broken door!",
+    "requestedById": "4f04433c-3a16-428e-85fe-f3bfa3fdc311"
+}
+
+###
+GET {{BASE_URL}}/FetchMaintenanceRequests
+Authorization: {{AUTH_TOKEN}}
+
+
+###
+PATCH {{BASE_URL}}/ResolveMaintenanceRequest/ab8bb5a4-6678-4e3d-b289-a4c8c48b8b14
+Content-Type: application/json
+Authorization: {{AUTH_TOKEN}}
+
+{
+    "resolutionNotes": "Sink has been fixed"
+}

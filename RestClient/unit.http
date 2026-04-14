@@ -1,0 +1,20 @@
+### Base tenancies url
+@BASE_URL = http://localhost:3000/api/units
+@AUTH_TOKEN = Bearer {token}
+
+POST {{BASE_URL}}/AddUnit
+Content-Type: application/json
+Authorization: {{AUTH_TOKEN}}
+
+{
+    "unitKey": "2",
+    "floor": 2,
+    "buildingId": "df50800e-dd11-4ae2-a969-5dc4cd811e7a",
+    "type": "STUDIO",
+    "description": "",
+    "rent": "7000"
+}
+
+###
+GET {{BASE_URL}}/FetchUnits
+Authorization: {{AUTH_TOKEN}}
