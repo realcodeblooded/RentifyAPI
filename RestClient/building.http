@@ -1,5 +1,5 @@
 @BASE_URL = http://localhost:/3000/api/buildings
-@AUTH_TOKEN = Bearer {token}
+@AUTH_TOKEN = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdmMmQ0NjI4LTZiMjgtNGU2Ny1iZGQxLWViYzlkMWEwZjdmMiIsImVtYWlsIjoibnVtYmVyLmRvZUBhcHAuY29tIiwicm9sZSI6Ik1hbmFnZXIgcm9sZSIsImlhdCI6MTc3NjM1MDg3OCwiZXhwIjoxNzc2MzU0NDc4fQ.UcUFFOh4ONlzAQ0I24A8egpkU2MbpTiThQTKGG3Le_k
 
 ### Add a new building
 POST http://localhost:3000/api/buildings/AddBuilding
@@ -8,11 +8,12 @@ Authorization: {{AUTH_TOKEN}}
 
 
 {
-    "buildingName": "Sunrise Apartments",
+    "propertyName": "My Apartments",
     "locationName": "Nairobi",
     "x": "1",
     "y": "2",
-    "type": "STANDALONE"
+    "type": "STANDALONE",
+    "propertyOwner": "31c49552-8e3f-4ab0-be2a-74355ee2691c"
 }
 
 

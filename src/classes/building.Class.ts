@@ -3,43 +3,73 @@ import { BaseBuilding } from "../types/building.Types";
 import { Buildings } from "../entities/buildings.Entity";
 import { IMAGES_TO_BASE64 } from "../services/images.Services";
 import { BaseResponse } from "../types/response.types";
+import { User } from "@/entities";
 
 class BuildingClass {
-    async createBuilding(building: BaseBuilding): Promise<BaseResponse> {
-        try {
-            /**
-             * Uncomment to add photos
-             */
-            // const base64Photos = IMAGES_TO_BASE64(building.photos, 10);
+  async createBuilding(building: BaseBuilding): Promise<BaseResponse> {
+    try {
+      /**
+       * Uncomment to add photos
+       */
+      // const base64Photos = IMAGES_TO_BASE64(building.photos, 10);
 
-            // if (base64Photos.Error) {
-            //     return { success: false, message: base64Photos.Error, data: base64Photos.Error }
-            // }
+      // if (base64Photos.Error) {
+      //     return { success: false, message: base64Photos.Error, data: base64Photos.Error }
+      // }
+      const user = await User.createQueryBuilder("user")
+        .leftJoinAndSelect("user.role", "role")
+        .where("user.id = :id", { id: building.propertyOwner })
+        .getOne();
 
-            const newBuilding = Buildings.create({
-                ...building,
-                // photos: base64Photos.Images
-            })
+      if (user === null) {
+        return { success: false, message: "User not found!", data: null };
+      }
 
-            const buildingCreated = await newBuilding.save();
+      if (user.role.key !== "MANAGER") {
+        return {
+          success: false,
+          message: "Property owner must be a manager",
+          data: null,
+        };
+      }
 
-            return { success: true, message: "Building added successfully", data: buildingCreated };
-        } catch (error) {
-            logger.error(error)
-            return { success: false, message: "An error occurred when creating a building", data: error }
-        }
-    };
+      const newBuilding = Buildings.create({
+        ...building,
+        propertyOwner: user,
+        // photos: base64Photos.Images
+      });
 
-    async fetchBuildings(): Promise<BaseResponse> {
-        try {
-            const buildings = await Buildings.find();
+      const buildingCreated = await newBuilding.save();
 
-            return { success: true, message: 'Success!', data: buildings };
-        } catch (error) {
-            logger.error(error)
-            return { success: false, message: "An error occurred when fetching buildings", data: error }
-        }
+      return {
+        success: true,
+        message: "Building added successfully",
+        data: null,
+      };
+    } catch (error) {
+      logger.error(error);
+      return {
+        success: false,
+        message: "An error occurred when creating a building",
+        data: error,
+      };
     }
+  }
+
+  async fetchBuildings(): Promise<BaseResponse> {
+    try {
+      const buildings = await Buildings.find();
+
+      return { success: true, message: "Success!", data: buildings };
+    } catch (error) {
+      logger.error(error);
+      return {
+        success: false,
+        message: "An error occurred when fetching buildings",
+        data: error,
+      };
+    }
+  }
 }
 
 export const buildingClass = new BuildingClass();

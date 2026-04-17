@@ -8,99 +8,170 @@ import { phoneService } from "@/services/phoneFormartter.service";
 import { maskCard, maskPhone, maskStringV2 } from "maskdata";
 
 class UserClass {
-    public async addUser(userData: CreateUserRequest, role: RoleKey): Promise<BaseResponse> {
-        try {
-            // Validate and format the phone number
-            const validPhone = phoneService.formatPhoneNumber(userData.phone);
+  public async addUser(
+    userData: CreateUserRequest,
+    role: RoleKey,
+  ): Promise<BaseResponse> {
+    try {
+      // Validate and format the phone number
+      const validPhone = phoneService.formatPhoneNumber(userData.phone);
 
-            if (!validPhone) return { success: false, message: 'Invalid Phone!', data: null };
+      if (!validPhone)
+        return { success: false, message: "Invalid Phone!", data: null };
 
-            userData.phone = validPhone;
+      userData.phone = validPhone;
 
-            // Check if the Id Number already exists
-            const idExists = await authClass.userExistsByIdNumber(userData.idNumber);
+      // Check if the Id Number already exists
+      const idExists = await authClass.userExistsByIdNumber(userData.idNumber);
 
-            if (idExists) {
-                return { success: false, message: 'A user with that Id number already exists.', data: null };
-            }
+      if (idExists) {
+        return {
+          success: false,
+          message: "A user with that Id number already exists.",
+          data: null,
+        };
+      }
 
-            // Check if the email already exists
-            const emailExists = await authClass.userExistsByEmail(userData.email);
+      // Check if the email already exists
+      const emailExists = await authClass.userExistsByEmail(userData.email);
 
-            if (emailExists) {
-                return { success: false, message: 'A user with that email already exists.', data: null };
-            }
+      if (emailExists) {
+        return {
+          success: false,
+          message: "A user with that email already exists.",
+          data: null,
+        };
+      }
 
-            // Hash the user password
-            let hashedPassword = await authClass.hashPassword(userData.password);
+      // Hash the user password
+      let hashedPassword = await authClass.hashPassword(userData.password);
 
-            // Get the role Id
-            const roleId = await authClass.getRoleId(role);
-            if (!roleId) return { success: false, message: "Invalid role.", data: null };
+      // Get the role Id
+      const roleId = await authClass.getRoleId(role);
+      if (!roleId)
+        return { success: false, message: "Invalid role.", data: null };
 
-            let newUser = User.create({
-                ...userData,
-                password: hashedPassword,
-                roleId: roleId
-            });
+      let newUser = User.create({
+        ...userData,
+        password: hashedPassword,
+        roleId: roleId,
+      });
 
-            await newUser.save();
+      await newUser.save();
 
-            return { success: true, data: [], message: `${newUser.getFullName()} added successfully.` }
-
-        } catch (error) {
-            logger.error("Error adding user:", error);
-            return { success: false, message: "Error adding user", data: error };
-        }
-    };
-
-    // Returns all active users
-    public async fetchUsers(): Promise<BaseResponse> {
-        try {
-            const users = await User.find();
-
-            if (!users || users.length === 0) {
-                // Return an error users not found
-                return { success: false, message: 'No users found.', data: null };
-            }
-
-            const maskOptions = {
-                maskWith: "*",
-                unmaskedStartDigits: 9,
-                unmaskedEndDigits: 1
-            };
-
-            const maskIdOptions = {
-                maskWith: "*",
-                unmaskedStartDigits: 3,
-                unmaskedEndDigits: 1
-            }
-
-            // Set response
-            const response: UserResponse[] = users.map((user) => {
-                // Mask sensitive data
-                const maskedPhoneNumber = maskPhone(user.phone, maskOptions);
-                const maskedIdNumber = maskCard(user.idNumber.toString(), maskIdOptions);
-
-                // Format response object
-                let formattedUser: UserResponse = {
-                    id: user.id,
-                    idNumber: maskedIdNumber,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    email: user.email,
-                    phone: maskedPhoneNumber
-                }
-
-                return formattedUser;
-            })
-            return { success: true, message: 'Success!', data: response };
-
-        } catch (error) {
-            logger.error(error);
-            return { success: false, message: "An error occured while fetching users", data: error };
-        }
+      return {
+        success: true,
+        data: [],
+        message: `${newUser.getFullName()} added successfully.`,
+      };
+    } catch (error) {
+      logger.error("Error adding user:", error);
+      return { success: false, message: "Error adding user", data: error };
     }
+  }
+
+  // Returns all active users
+  public async fetchUsers(): Promise<BaseResponse> {
+    try {
+      const users = await User.createQueryBuilder("u")
+        .innerJoin("u.role", "r")
+        .select([
+          "u.id",
+          "u.idNumber",
+          "u.firstName",
+          "u.lastName",
+          "u.email",
+          "u.phone",
+          "r.key",
+        ])
+        .getMany();
+
+      if (!users || users.length === 0) {
+        // Return an error users not found
+        return { success: false, message: "No users found.", data: null };
+      }
+
+      // Set response
+      const response: UserResponse[] = users.map((user) => {
+        // Format response object
+        let formattedUser: UserResponse = {
+          id: user.id,
+          idNumber: this.maskIdNumber(user.idNumber.toString()),
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          phone: this.maskPhone(user.phone),
+          role: user.role.key,
+        };
+
+        return formattedUser;
+      });
+      return { success: true, message: "Success!", data: response };
+    } catch (error) {
+      logger.error(error);
+      return {
+        success: false,
+        message: "An error occured while fetching users",
+        data: error,
+      };
+    }
+  }
+
+  public async fetchUserDetails(id: string): Promise<BaseResponse> {
+    try {
+      const user = await User.findOneBy({ id: id });
+
+      if (!user) {
+        return { success: false, message: "User not found!", data: user };
+      }
+
+      let formattedUser: UserResponse = {
+        id: user.id,
+        idNumber: this.maskIdNumber(user.idNumber.toString()),
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        phone: this.maskPhone(user.phone),
+        role: user.role.key,
+      };
+
+      return { success: true, message: "Success", data: formattedUser };
+    } catch (error) {
+      return {
+        success: false,
+        message: "An error occurred while fetching user details",
+        data: null,
+      };
+    }
+  }
+
+  public maskPhone(phone: string): string {
+    try {
+      const maskOptions = {
+        maskWith: "*",
+        unmaskedStartDigits: 9,
+        unmaskedEndDigits: 1,
+      };
+
+      return maskPhone(phone, maskOptions);
+    } catch (error) {
+      throw new Error(`${error}`);
+    }
+  }
+
+  public maskIdNumber(idNumber: string): string {
+    try {
+      const maskOptions = {
+        maskWith: "*",
+        unmaskedStartDigits: 3,
+        unmaskedEndDigits: 1,
+      };
+
+      return maskCard(idNumber, maskOptions);
+    } catch (error) {
+      throw new Error(`${error}`);
+    }
+  }
 }
 
 export const userClass = new UserClass();

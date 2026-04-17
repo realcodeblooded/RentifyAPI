@@ -39,7 +39,7 @@ export const AppDataSource: DataSource = new DataSource({
   username: config.db.username,
   password: config.db.password,
   database: config.db.database,
-  synchronize: config.nodeEnv === "development",
+  synchronize: false,
   logging: config.nodeEnv === "production",
   entities: [
     config.nodeEnv === "production"

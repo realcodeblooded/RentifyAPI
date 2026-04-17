@@ -1,7 +1,7 @@
 ### Base tenancies url
 @BASE_URL = http://localhost:3000/api/tenancies
 ### Replace from ey...
-@AUTH_TOKEN = Bearer {token}
+@AUTH_TOKEN = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdmMmQ0NjI4LTZiMjgtNGU2Ny1iZGQxLWViYzlkMWEwZjdmMiIsImVtYWlsIjoibnVtYmVyLmRvZUBhcHAuY29tIiwicm9sZSI6Ik1hbmFnZXIgcm9sZSIsImlhdCI6MTc3NjM1MDg3OCwiZXhwIjoxNzc2MzU0NDc4fQ.UcUFFOh4ONlzAQ0I24A8egpkU2MbpTiThQTKGG3Le_k
 
 
 POST {{BASE_URL}}/CreateTenancy
@@ -9,9 +9,9 @@ Content-Type: application/json
 Authorization: {{AUTH_TOKEN}}
 
 {
-    "tenantId": "209f3a47-d79e-4573-9273-9d2337760501",
-    "buildingId": "df50800e-dd11-4ae2-a969-5dc4cd811e7a",
-    "unitId": "45bc2c92-d41f-4416-a1ee-f5e9e1e2272d"
+    "tenantId": "31c49552-8e3f-4ab0-be2a-74355ee2691c",
+    "buildingId": "cd226824-77ff-4b10-baec-28ea8c72240d",
+    "unitId": "e896e20e-c3d7-40a4-9b07-472a144084cf"
 }
 
 

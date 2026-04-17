@@ -24,6 +24,7 @@ import { Roles } from "./roles.Entity";
 import { Tenancies } from "./tenancy.Entity";
 import { NextOfKin } from "./nextOfKin.Entity";
 import { Maintenances } from "./maintenances.Entity";
+import { Buildings } from "./buildings.Entity";
 
 /**
  * User entity representing a registered user in the system.
@@ -59,6 +60,9 @@ export class User extends BaseEntity {
   @IsString({ message: "Last name must be a string" })
   @Length(2, 100, { message: "Last name must be between 2 and 100 characters" })
   lastName!: string;
+
+  @OneToMany(() => Buildings, (building) => building.propertyOwner)
+  property!: Buildings[];
 
   /**
    * User's national identification number

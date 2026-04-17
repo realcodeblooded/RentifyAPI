@@ -1,41 +1,42 @@
 export enum BuildingType {
-    STANDALONE = 'STANDALONE',
-    APARTMENT = 'APARTMENT',
-    TOWNHOUSE = 'TOWNHOUSE',
-    COMMERCIAL = 'COMMERCIAL',
-    MIXED_USE = 'MIXED_USE'
+  STANDALONE = "STANDALONE",
+  APARTMENT = "APARTMENT",
+  TOWNHOUSE = "TOWNHOUSE",
+  COMMERCIAL = "COMMERCIAL",
+  MIXED_USE = "MIXED_USE",
 }
 
 export enum UnitType {
-    // Standalone types
-    WHOLE_BUILDING = 'WHOLE_BUILDING',
-    GUEST_HOUSE = 'GUEST_HOUSE',
-    BASEMENT_SUITE = 'BASEMENT_SUITE',
+  // Standalone types
+  WHOLE_BUILDING = "WHOLE_BUILDING",
+  GUEST_HOUSE = "GUEST_HOUSE",
+  BASEMENT_SUITE = "BASEMENT_SUITE",
 
-    // Apartment/Storeyed types
-    STUDIO = 'STUDIO',
-    ONE_BEDROOM = 'ONE_BEDROOM',
-    TWO_BEDROOM = 'TWO_BEDROOM',
-    THREE_BEDROOM = 'THREE_BEDROOM',
-    PENTHOUSE = 'PENTHOUSE',
-    LOFT = 'LOFT',
-    DUPLEX = 'DUPLEX',
+  // Apartment/Storeyed types
+  STUDIO = "STUDIO",
+  ONE_BEDROOM = "ONE_BEDROOM",
+  TWO_BEDROOM = "TWO_BEDROOM",
+  THREE_BEDROOM = "THREE_BEDROOM",
+  PENTHOUSE = "PENTHOUSE",
+  LOFT = "LOFT",
+  DUPLEX = "DUPLEX",
 
-    // Commercial
-    OFFICE = 'OFFICE',
-    RETAIL = 'RETAIL',
-    WAREHOUSE = 'WAREHOUSE'
+  // Commercial
+  OFFICE = "OFFICE",
+  RETAIL = "RETAIL",
+  WAREHOUSE = "WAREHOUSE",
 }
 
 export type BaseBuilding = {
-    buildingName: string,
-    locationName: string
-    x: number
-    y: number
-    /*
-    * Uncomment to add photos
-    */
-    // photos: Express.Multer.File[]
-    type: BuildingType
-    amenities: string[]
-}
+  propertyName: string;
+  locationName: string;
+  x: number;
+  y: number;
+  /*
+   * Uncomment to add photos
+   */
+  // photos: Express.Multer.File[]
+  type: BuildingType;
+  amenities: string[];
+  propertyOwner: string;
+};

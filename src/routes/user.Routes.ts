@@ -4,21 +4,34 @@ import { Router } from "express";
 import { userSchema } from "../validators/user.Validators";
 
 class UserRoutes {
-    router: Router;
-    controller: UserController;
+  router: Router;
+  controller: UserController;
 
-    constructor() {
-        this.router = Router();
-        this.controller = new UserController();
-        this.initializeRoutes();
-    };
+  constructor() {
+    this.router = Router();
+    this.controller = new UserController();
+    this.initializeRoutes();
+  }
 
-    initializeRoutes() {
-        this.router.post("/CreateManager", validate(userSchema), this.controller.addManager);
-        this.router.post("/CreateTenant", validate(userSchema), this.controller.addTenant);
-        this.router.post("/CreateAdmin", validate(userSchema), this.controller.addAdmin);
-        this.router.get("/FetchUsers", this.controller.fetchusers);
-    }
+  initializeRoutes() {
+    this.router.post(
+      "/CreateManager",
+      validate(userSchema),
+      this.controller.addManager,
+    );
+    this.router.post(
+      "/CreateTenant",
+      validate(userSchema),
+      this.controller.addTenant,
+    );
+    this.router.post(
+      "/CreateAdmin",
+      validate(userSchema),
+      this.controller.addAdmin,
+    );
+    this.router.get("/FetchUsers", this.controller.fetchusers);
+    this.router.get("/FetchUserDetails/:id", this.controller.fetchUserDetails);
+  }
 }
 
-export const userRoutes = new UserRoutes()
+export const userRoutes = new UserRoutes();

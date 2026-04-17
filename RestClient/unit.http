@@ -1,6 +1,6 @@
 ### Base tenancies url
 @BASE_URL = http://localhost:3000/api/units
-@AUTH_TOKEN = Bearer {token}
+@AUTH_TOKEN = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdmMmQ0NjI4LTZiMjgtNGU2Ny1iZGQxLWViYzlkMWEwZjdmMiIsImVtYWlsIjoibnVtYmVyLmRvZUBhcHAuY29tIiwicm9sZSI6Ik1hbmFnZXIgcm9sZSIsImlhdCI6MTc3NjM1MDg3OCwiZXhwIjoxNzc2MzU0NDc4fQ.UcUFFOh4ONlzAQ0I24A8egpkU2MbpTiThQTKGG3Le_k
 
 POST {{BASE_URL}}/AddUnit
 Content-Type: application/json
@@ -9,7 +9,7 @@ Authorization: {{AUTH_TOKEN}}
 {
     "unitKey": "2",
     "floor": 2,
-    "buildingId": "df50800e-dd11-4ae2-a969-5dc4cd811e7a",
+    "buildingId": "cd226824-77ff-4b10-baec-28ea8c72240d",
     "type": "STUDIO",
     "description": "",
     "rent": "7000"
