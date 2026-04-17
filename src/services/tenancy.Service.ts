@@ -163,8 +163,6 @@ class TenancyService {
         .andWhere("unit.buildingId = :buildingId", { buildingId })
         .getOne();
 
-      console.log("Is unit vacant? ", isVacant);
-
       // Find unit's active tenancy
       if (!isVacant?.tenant && isVacant) {
         return { unitId: isVacant.id, rent: isVacant.rent };

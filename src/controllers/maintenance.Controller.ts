@@ -10,7 +10,6 @@ export class MaintenanceController {
   async createRequest(req: Request, res: Response) {
     try {
       const { description, requestedById } = req.body;
-      console.log(req.body);
       const result = await maintenanceService.createRequest({
         description,
         requestedById,

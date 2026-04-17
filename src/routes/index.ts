@@ -7,6 +7,8 @@ import { maintenanceRoutes } from "./maintenance.Routes";
 import { authRoutes } from "./auth.Routes";
 import { authenticate } from "@/middlewares/auth.middleware";
 import { tenancyRoutes } from "./tenancy.Routes";
+import { dashboardService } from "@/services/dashboard.Service";
+import { dashRoutes } from "./dashboard.routes";
 
 /**
  * Main application routes configuration class.
@@ -55,6 +57,7 @@ class Routes {
     this.router.use("/maintenances", authenticate, maintenanceRoutes.router);
     this.router.use("/tenancies", authenticate, tenancyRoutes.router);
     this.router.use("/auth", authRoutes.router);
+    this.router.use("/dash", authenticate, dashRoutes.router)
   }
 }
 /**

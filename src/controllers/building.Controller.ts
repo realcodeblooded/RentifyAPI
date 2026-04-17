@@ -1,3 +1,4 @@
+import { logger } from "@/utils/logger";
 import { buildingService } from "../services/building.Service";
 import { BaseBuilding } from "../types/building.Types";
 import { Request, Response } from "express";
@@ -20,7 +21,7 @@ export class BuildingController {
         ...buildingCreated,
       });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
       return res.status(500).json({ error });
     }
   }
@@ -39,7 +40,7 @@ export class BuildingController {
         ...buildings,
       });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
       return res.status(500).json({ error });
     }
   }

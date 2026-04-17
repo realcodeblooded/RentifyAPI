@@ -22,7 +22,7 @@ export class Unit extends BaseEntity {
      * Unique key for the unit (e.g., unit number)
      * @example "A-101", "3B"
      */
-    @Column({ length: 50, unique: true })
+    @Column({ length: 50, unique: false })
     unitKey!: string;
 
     /**
