@@ -1,4 +1,4 @@
-import { unitClass } from "../classes/unit.Class"
+import { unitService } from "../services/unit.Service"
 import { BaseUnitDetails } from "../types/unit.Types"
 import { Request, Response } from "express"
 
@@ -7,7 +7,7 @@ export class UnitController {
         try {
             const unitDetails: BaseUnitDetails = req.body
 
-            const isUnitAdded = await unitClass.addUnit(unitDetails);
+            const isUnitAdded = await unitService.addUnit(unitDetails);
 
             if (!isUnitAdded.success) {
                 return res.status(404).json({
@@ -27,7 +27,7 @@ export class UnitController {
     async fetchUnits(req: Request, res: Response) {
         try {
 
-            const units = await unitClass.fetchUnits();
+            const units = await unitService.fetchUnits();
 
             return res.status(200).json({
                 ...units

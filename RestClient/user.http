@@ -1,7 +1,7 @@
 ### Base tenancies url
 @BASE_URL = http://localhost:3000/api/users
 ### Replace from ey...
-@AUTH_TOKEN = Bearer {token}
+@AUTH_TOKEN = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIwOWYzYTQ3LWQ3OWUtNDU3My05MjczLTlkMjMzNzc2MDUwMSIsImVtYWlsIjoibnVtYmVyLmRvZUBhcHAuY29tIiwicm9sZSI6Ik1hbmFnZXIgcm9sZSIsImlhdCI6MTc3MTY4Njg4Mn0.gCr2QrAJ5wZjcNXSxsJIrfdATd_BPHJqAzx2KhHUrvs
 
 
 POST {{BASE_URL}}/CreateManager

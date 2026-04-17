@@ -9,9 +9,9 @@ import {
   IsVacantResponse,
 } from "@/types/tenancy.Types";
 import { logger } from "@/utils/logger";
-import { contractClass } from "./contract.Class";
+import { contractService } from "./contract.Service";
 
-class TenancyClass {
+class TenancyService {
   public async createTenancy(
     tenancy: BaseTenancyDetails,
   ): Promise<BaseResponse> {
@@ -28,7 +28,7 @@ class TenancyClass {
       };
     }
 
-    // Check if the unit  they are vacting to is
+    // Check if the unit  they are vacating to is vacant
     const upForTenancy = await this.isVacant(
       tenancy.unitId,
       tenancy.buildingId,
@@ -69,7 +69,7 @@ class TenancyClass {
         };
 
         const createdContract =
-          await contractClass.createContract(contractDetails); // ✅ pass manager
+          await contractService.createContract(contractDetails); // ✅ pass manager
         if (!createdContract.success)
           throw new Error("Could not create contract");
       });
@@ -230,8 +230,8 @@ class TenancyClass {
       unit.tenant = null;
       await unit.save();
       return true;
-    } catch (error) {}
+    } catch (error) { }
   }
 }
 
-export const tenancyClass = new TenancyClass();
+export const tenancyService = new TenancyService();

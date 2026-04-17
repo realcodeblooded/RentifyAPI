@@ -1,5 +1,5 @@
 import { logger } from "@/utils/logger";
-import { authClass } from "../classes/auth.Class"
+import { authService } from "../services/auth.Service"
 import { BaseRole } from "../types/role.Types";
 import { Request, Response } from "express"
 import { AuthRequest } from "@/types/auth.Types";
@@ -10,7 +10,7 @@ export class AuthController {
             // Get the role details from the reequest body
             const newRole: BaseRole = req.body;
             // Attempt to save the role to the DB
-            const isRoleAdded = await authClass.addRole(newRole);
+            const isRoleAdded = await authService.addRole(newRole);
 
             if (!isRoleAdded.success) {
                 return res.status(400).json({
@@ -37,7 +37,7 @@ export class AuthController {
                 return res.status(400).json({ success: false, message: "Email and password are required", data: null });
             }
 
-            const loginResult = await authClass.login(userData.email, userData.password);
+            const loginResult = await authService.login(userData.email, userData.password);
 
             if (!loginResult.success) {
                 return res.status(400).json(loginResult);
@@ -61,7 +61,7 @@ export class AuthController {
                 return res.status(400).json({ message: "Refresh token is required" });
             }
 
-            const result = await authClass.refresh(refreshToken);
+            const result = await authService.refresh(refreshToken);
 
             if (!result.success) {
                 return res.status(401).json({ message: result.message });
@@ -85,7 +85,7 @@ export class AuthController {
                 return res.status(400).json({ message: "User ID is required" });
             }
 
-            const isLoggedOut = await authClass.logout(userId);
+            const isLoggedOut = await authService.logout(userId);
 
             if (!isLoggedOut.success) {
                 return res.status(400).json({ message: isLoggedOut.message });

@@ -1,4 +1,4 @@
-import { buildingClass } from "../classes/building.Class";
+import { buildingService } from "../services/building.Service";
 import { BaseBuilding } from "../types/building.Types";
 import { Request, Response } from "express";
 
@@ -8,7 +8,7 @@ export class BuildingController {
       const buildingData: BaseBuilding = req.body;
       req.body.photos = req.files as Express.Multer.File[];
 
-      const buildingCreated = await buildingClass.createBuilding(buildingData);
+      const buildingCreated = await buildingService.createBuilding(buildingData);
 
       if (!buildingCreated.success) {
         return res.status(400).json({
@@ -27,7 +27,7 @@ export class BuildingController {
 
   async fetchbuildings(req: Request, res: Response) {
     try {
-      const buildings = await buildingClass.fetchBuildings();
+      const buildings = await buildingService.fetchBuildings();
 
       if (!buildings.success) {
         return res.status(404).json({

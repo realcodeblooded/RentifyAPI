@@ -1,4 +1,4 @@
-import { Server } from './classes/server';
+import { Server } from './services/server';
 
 /**
  * Application entry point.

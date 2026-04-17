@@ -1,4 +1,4 @@
-import { userClass } from "../classes/user.Class";
+import { userService } from "../services/user.Service";
 import { BaseUserDetails, CreateUserRequest } from "@/types/user.Types";
 import { logger } from "../utils/logger";
 import { Request, Response } from "express";
@@ -9,7 +9,7 @@ export class UserController {
     try {
       const userData: CreateUserRequest = req.body;
 
-      const isUserAdded = await userClass.addUser(
+      const isUserAdded = await userService.addUser(
         { ...userData },
         RoleKey.MANAGER,
       );
@@ -32,7 +32,7 @@ export class UserController {
     try {
       const userData: CreateUserRequest = req.body;
 
-      const isUserAdded = await userClass.addUser(
+      const isUserAdded = await userService.addUser(
         { ...userData },
         RoleKey.TENANT,
       );
@@ -55,7 +55,7 @@ export class UserController {
     try {
       const userData: CreateUserRequest = req.body;
 
-      const isUserAdded = await userClass.addUser(
+      const isUserAdded = await userService.addUser(
         { ...userData },
         RoleKey.ADMIN,
       );
@@ -76,7 +76,7 @@ export class UserController {
 
   async fetchusers(req: Request, res: Response) {
     try {
-      const users = await userClass.fetchUsers();
+      const users = await userService.fetchUsers();
 
       return res.status(200).json({
         ...users,
@@ -94,7 +94,7 @@ export class UserController {
     try {
       const id: string = req.params.id;
 
-      const user = await userClass.fetchUserDetails(id);
+      const user = await userService.fetchUserDetails(id);
 
       if (!user.success) {
         return res.status(400).json(user);

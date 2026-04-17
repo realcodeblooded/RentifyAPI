@@ -2,12 +2,12 @@ import { logger } from "../utils/logger";
 import { User } from "../entities/users.Entity";
 import { CreateUserRequest, UserResponse } from "../types/user.Types";
 import { BaseResponse } from "../types/response.types";
-import { authClass } from "./auth.Class";
+import { authService } from "./auth.Service";
 import { RoleKey } from "../types/role.Types";
 import { phoneService } from "@/services/phoneFormartter.service";
 import { maskCard, maskPhone, maskStringV2 } from "maskdata";
 
-class UserClass {
+class UserService {
   public async addUser(
     userData: CreateUserRequest,
     role: RoleKey,
@@ -22,7 +22,7 @@ class UserClass {
       userData.phone = validPhone;
 
       // Check if the Id Number already exists
-      const idExists = await authClass.userExistsByIdNumber(userData.idNumber);
+      const idExists = await authService.userExistsByIdNumber(userData.idNumber);
 
       if (idExists) {
         return {
@@ -33,7 +33,7 @@ class UserClass {
       }
 
       // Check if the email already exists
-      const emailExists = await authClass.userExistsByEmail(userData.email);
+      const emailExists = await authService.userExistsByEmail(userData.email);
 
       if (emailExists) {
         return {
@@ -44,10 +44,10 @@ class UserClass {
       }
 
       // Hash the user password
-      let hashedPassword = await authClass.hashPassword(userData.password);
+      let hashedPassword = await authService.hashPassword(userData.password);
 
       // Get the role Id
-      const roleId = await authClass.getRoleId(role);
+      const roleId = await authService.getRoleId(role);
       if (!roleId)
         return { success: false, message: "Invalid role.", data: null };
 
@@ -174,4 +174,4 @@ class UserClass {
   }
 }
 
-export const userClass = new UserClass();
+export const userService = new UserService();

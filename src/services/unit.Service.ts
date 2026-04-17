@@ -3,7 +3,7 @@ import { BaseUnitDetails } from "../types/unit.Types";
 import { logger } from "../utils/logger";
 import { Unit } from "../entities/units.Entity";
 
-class UnitClass {
+class UnitService {
     async addUnit(unitDetails: BaseUnitDetails): Promise<BaseResponse> {
         try {
             const newUnit = Unit.create(unitDetails);
@@ -30,4 +30,4 @@ class UnitClass {
 
 }
 
-export const unitClass = new UnitClass();
+export const unitService = new UnitService();

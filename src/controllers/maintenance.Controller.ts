@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { maintenanceClass } from "@/classes/maintenance.Class";
+import { maintenanceService } from "../services/maintenance.Service";
 import {
   CreateMaintenanceRequest,
   ResolveMaintenanceRequest,
@@ -11,7 +11,7 @@ export class MaintenanceController {
     try {
       const { description, requestedById } = req.body;
       console.log(req.body);
-      const result = await maintenanceClass.createRequest({
+      const result = await maintenanceService.createRequest({
         description,
         requestedById,
       });
@@ -32,7 +32,7 @@ export class MaintenanceController {
 
   async fetchRequests(req: Request, res: Response) {
     try {
-      const result = await maintenanceClass.fetchRequests();
+      const result = await maintenanceService.fetchRequests();
 
       if (!result.success) {
         return res.status(404).json(result);
@@ -52,7 +52,7 @@ export class MaintenanceController {
     try {
       const requestData: ResolveMaintenanceRequest = req.body;
       const { id } = req.params;
-      const result = await maintenanceClass.resolveRequest(id, requestData);
+      const result = await maintenanceService.resolveRequest(id, requestData);
 
       if (!result.success) {
         const statusCode = result.message.includes("not found") ? 404 : 400;

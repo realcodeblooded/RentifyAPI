@@ -8,7 +8,7 @@ import {
 import { BaseResponse } from "@/types/response.types";
 import { logger } from "@/utils/logger";
 
-class MaintenanceClass {
+class MaintenanceService {
   private maintenanceRepository = AppDataSource.getRepository(Maintenances);
   private userRepository = AppDataSource.getRepository(User);
 
@@ -121,4 +121,4 @@ class MaintenanceClass {
   }
 }
 
-export const maintenanceClass = new MaintenanceClass();
+export const maintenanceService = new MaintenanceService();

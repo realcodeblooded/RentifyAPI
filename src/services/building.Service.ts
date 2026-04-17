@@ -1,11 +1,11 @@
 import { logger } from "../utils/logger";
 import { BaseBuilding } from "../types/building.Types";
 import { Buildings } from "../entities/buildings.Entity";
-import { IMAGES_TO_BASE64 } from "../services/images.Services";
+import { IMAGES_TO_BASE64 } from "./images.Services";
 import { BaseResponse } from "../types/response.types";
 import { User } from "@/entities";
 
-class BuildingClass {
+class BuildingService {
   async createBuilding(building: BaseBuilding): Promise<BaseResponse> {
     try {
       /**
@@ -72,4 +72,4 @@ class BuildingClass {
   }
 }
 
-export const buildingClass = new BuildingClass();
+export const buildingService = new BuildingService();

@@ -1,4 +1,4 @@
-import { tenancyClass } from "@/classes/tenancy.Class";
+import { tenancyService } from "../services/tenancy.Service";
 import { BaseTenancyDetails } from "@/types/tenancy.Types";
 import { Request, Response } from "express";
 
@@ -7,7 +7,7 @@ export class TenancyController {
         try {
             const tenancyDetails: BaseTenancyDetails = req.body;
 
-            const tenancyCreated = await tenancyClass.createTenancy(tenancyDetails);
+            const tenancyCreated = await tenancyService.createTenancy(tenancyDetails);
 
             if (!tenancyCreated.success) {
                 return res.status(400).json({
@@ -26,7 +26,7 @@ export class TenancyController {
 
     public fetchTenancies = async (req: Request, res: Response) => {
         try {
-            const tenancies = await tenancyClass.fetchTenancies();
+            const tenancies = await tenancyService.fetchTenancies();
 
             if (!tenancies.success) {
                 return res.status(400).json({
@@ -48,7 +48,7 @@ export class TenancyController {
     public vacateUnit = async (req: Request, res: Response) => {
         try {
             const { tenancyId } = req.body
-            const isVacated = await tenancyClass.endTenancy(tenancyId);
+            const isVacated = await tenancyService.endTenancy(tenancyId);
 
             if (!isVacated.success) return res.status(400).json({ ...isVacated });
 

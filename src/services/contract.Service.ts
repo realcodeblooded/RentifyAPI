@@ -2,8 +2,7 @@ import { Contracts } from "@/entities/contracts.Entity";
 import { BaseContractDetails } from "@/types/contract.Types";
 import { BaseResponse } from "@/types/response.types";
 import { logger } from "@/utils/logger";
-
-export class ContractClass {
+export class ContractService {
     async createContract(contractDetails: BaseContractDetails): Promise<BaseResponse> {
         try {
             const newContract = Contracts.create(contractDetails);
@@ -19,4 +18,4 @@ export class ContractClass {
 
 }
 
-export const contractClass = new ContractClass();
+export const contractService = new ContractService();

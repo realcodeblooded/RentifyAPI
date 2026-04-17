@@ -11,7 +11,7 @@ import { User } from "@/entities/users.Entity";
 /**
  * Main Authentication class
  */
-class AuthClass {
+class AuthService {
     /**
      * Gets the id of the role
      * @param roleKey
@@ -184,4 +184,4 @@ class AuthClass {
     }
 }
 
-export const authClass = new AuthClass();
+export const authService = new AuthService();
