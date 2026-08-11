@@ -105,23 +105,6 @@ cp .env.example .env
 
 Update the `.env` file with your database credentials:
 
-```env
-# Server
-NODE_ENV=development
-PORT=3000
-API_VERSION=v1
-
-# Database
-DB_HOST=localhost
-DB_PORT=3306
-DB_USERNAME=rentifyUser
-DB_PASSWORD=Test@1234!
-DB_DATABASE=RentifyDB
-
-# App
-APP_NAME=RentifyAPI
-```
-
 ### 5. Run Database Migrations
 
 ```bash
@@ -185,12 +168,15 @@ Expected response:
 ```
 RentifyAPI/
 ├── src/
-│   ├── classes/          # Core classes (Server, etc.)
 │   ├── config/           # Configuration files
 │   │   ├── database.ts   # TypeORM configuration
 │   │   ├── environment.ts # Environment variables
 │   │   └── version.ts    # Version information
+│   │   └── cloudinary.ts    # Cloudinary configuration
+│   │   └── upload.ts    # Multer config
+│   │   └── jest.config.ts    # Jest config
 │   ├── controllers/      # Route controllers
+│   │   └── __tests__     # Spec files
 │   ├── entities/         # TypeORM entities
 │   ├── middlewares/      # Express middlewares
 │   ├── migrations/       # Database migrations
@@ -198,6 +184,7 @@ RentifyAPI/
 │   ├── services/         # Business logic
 │   ├── types/            # TypeScript type definitions
 │   ├── utils/            # Utility functions
+│   └── validators.ts     # Request validators
 │   └── app.ts            # Application entry point
 ├── logs/                 # Application logs
 ├── dist/                 # Compiled JavaScript (generated)
