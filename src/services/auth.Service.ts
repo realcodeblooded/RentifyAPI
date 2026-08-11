@@ -97,8 +97,17 @@ class AuthService {
             // check if role key exists
             const roleExists = await this.getRoleId(role.key);
 
-            // Return error for existing role key
-            if (roleExists) return { success: false, message: "A role with that key already exists", data: null };
+            // if the role key exists. Ask the user to change it
+            if (roleExists) {
+                return { success: false, message: "A role with that key already exists", data: null }
+
+            } else if (!roleExists) {
+                // Check if it exists in  the role key enum
+                // To allow a key, add it to the RoleKey Enum
+                if (!RoleKey[role.key]) {
+                    return { success: false, message: `${role.key} is not allowed`, data: null }
+                }
+            };
 
             const newRole = Roles.create(role);
 
@@ -107,16 +116,18 @@ class AuthService {
 
             return { success: true, message: 'Role created successfully!', data: isRoleCreated };
         } catch (error) {
+            logger.error(error)
             return { success: false, message: 'An unexpected error occurred while adding a new role!', data: error };
         }
     }
     async login(email: string, password: string): Promise<BaseResponse> {
         try {
             const user = await User
-                .createQueryBuilder('user')
-                .leftJoinAndSelect('user.role', 'role')
-                .where('user.email = :email', { email })
-                .getOne();
+                .createQueryBuilder()
+                .select('*')
+                .from("user", "u")
+                .where("u.email = :email", { email })
+                .getRawOne()
 
             if (!user) return { success: false, message: "Email not found", data: null };
 
@@ -124,17 +135,23 @@ class AuthService {
 
             if (!isPasswordValid) return { success: false, message: "Invalid password", data: null };
 
-            const accessToken = jwtService.generateToken({ id: user.id, email: user.email, role: user.role.name }, '1h');
-            const refreshToken = jwtService.generateToken({ id: user.id, role: user.role.name }, '7d');
+            const accessToken = jwtService.generateToken({ id: user.id, email: user.email, role: user.role }, '1h');
+            const refreshToken = jwtService.generateToken({ id: user.id, role: user.role }, '7d');
 
             user.refreshToken = refreshToken;
-            await user.save();
+            await User
+                .createQueryBuilder()
+                .update("users")
+                .set({ refreshToken })
+                .where("id = :id", { id: user.id })
+                .execute()
+
             const response: AuthResponse = {
                 id: user.id,
                 email: user.email,
                 firstName: user.firstName,
                 lastName: user.lastName,
-                role: user.role.name,
+                role: user.role,
                 accessToken: accessToken,
                 refreshToken: refreshToken
             };

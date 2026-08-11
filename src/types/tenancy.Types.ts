@@ -1,4 +1,4 @@
-import { BaseBuilding } from "./building.Types";
+import { BaseProperty } from "./property.Types";
 import { PaymentFrequency } from "./contract.Types";
 import { BaseUnitDetails } from "./unit.Types";
 import { BaseUserDetails } from "./user.Types";
@@ -13,6 +13,7 @@ export interface BaseTenancyDetails {
     buildingId: string;
     unitId: string;
     rent?: number;
+    managerId: string;
     currency?: string;
     frequency?: PaymentFrequency;
     gracePeriod?: number;
@@ -30,4 +31,5 @@ export interface FetchTenanciesResponse extends BaseTenancyDetails {
 export interface IsVacantResponse {
     unitId: string,
     rent: number,
+    manager: string
 }

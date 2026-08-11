@@ -10,6 +10,7 @@ import {
 } from "@/types/tenancy.Types";
 import { logger } from "@/utils/logger";
 import { contractService } from "./contract.Service";
+import { Property } from "@/entities/property.Entity";
 
 class TenancyService {
   public async createTenancy(
@@ -62,6 +63,7 @@ class TenancyService {
           rent: tenancy.rent ?? upForTenancy.rent, // ✅ ?? is safer than ||
           currency: tenancy.currency ?? "KSH",
           tenancyId: createdTenancy.id,
+          managerId: tenancy.managerId,
           frequency: tenancy.frequency ?? PaymentFrequency.MONTHLY,
           gracePeriod: tenancy.gracePeriod ?? 5,
           startDate: tenancy.startDate,
@@ -90,26 +92,38 @@ class TenancyService {
   }
   public async fetchTenancies(): Promise<BaseResponse> {
     try {
-      const tenancies = await Tenancies.find();
+      const tenancies = (await Tenancies
+        .getRepository()
+        .createQueryBuilder("tenancy")
+        .leftJoin("tenancy.tenant", "user")
+        .leftJoin("tenancy.unit", "unit")
+        .leftJoin("tenancy.building", "property")
+        .leftJoin("property.propertyManager", "owner")
+        .addSelect(["user.firstName", "user.lastName", "unit.rent", "owner.propertyOwner"])
+        .getMany());
+
+      console.log(tenancies);
 
       const response: FetchTenanciesResponse[] = tenancies.map((tenancy) => {
         let formattedTenancy: FetchTenanciesResponse = {
           id: tenancy.id,
           tenantId: tenancy.tenantId,
-          buildingId: tenancy.unit.buildingId,
-          unitId: tenancy.unit.id,
+          buildingId: tenancy.buildingId,
+          unitId: tenancy.id,
           rent: tenancy.unit.rent,
-          // currency: tenancy.currency. // Uncomment to add currency : Default = KSH
-          // frequency: tenancy.frequency, // Uncomment to add tenancy frequency
+          managerId: tenancy.tenant.firstName,
+
           firstName: tenancy.tenant.firstName,
           lastName: tenancy.tenant.lastName,
           unitKey: tenancy.unit.unitKey,
         };
+        console.log("Response", tenancy);
 
         return formattedTenancy;
       });
       return { success: true, message: "Success.", data: response };
     } catch (error) {
+      console.log(error);
       logger.error(error);
       return {
         success: false,
@@ -151,21 +165,28 @@ class TenancyService {
 
   public async isVacant(
     unitId: string,
-    buildingId: string,
+    propertyId: string,
   ): Promise<IsVacantResponse | null> {
     try {
       // validate unit id
-      if (!unitId || unitId === "") return null;
+      if (!unitId || unitId === "" || !propertyId || propertyId === "") return null;
+
+      // validate building id
+      const property = await Property.findOne({ where: { id: propertyId } });
+
+      if (!property) return null;
 
       const isVacant = await Unit.createQueryBuilder("unit")
         .leftJoinAndSelect("unit.tenant", "tenant")
         .where("unit.id = :unitId", { unitId })
-        .andWhere("unit.buildingId = :buildingId", { buildingId })
+        .andWhere(`unit.buildingId = :propertyId`, { propertyId })
         .getOne();
+
 
       // Find unit's active tenancy
       if (!isVacant?.tenant && isVacant) {
-        return { unitId: isVacant.id, rent: isVacant.rent };
+        console.log("Vacant Unit", isVacant);
+        return { unitId: isVacant.id, rent: isVacant.rent, manager: property?.propertyManager.id };
       }
       return null;
     } catch (error) {

@@ -10,14 +10,14 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { BuildingType } from "../types/building.Types";
 import { Tenancies } from "./tenancy.Entity";
 import { Unit } from "./units.Entity";
-import { Amenities } from "./amenities.Entity";
+import { Amenity } from "./amenities.Entity";
 import { User } from "./users.Entity";
+import { PropertyType } from "@/types/property.Types";
 
-@Entity("properties")
-export class Buildings extends BaseEntity {
+@Entity("property")
+export class Property extends BaseEntity {
   /**
    * Unique identifier for the building (UUID format)
    */
@@ -27,9 +27,9 @@ export class Buildings extends BaseEntity {
   @Column({ length: 100, nullable: false, type: "varchar" })
   propertyName!: string;
 
-  @ManyToOne(() => User, (user) => user.property)
-  @JoinColumn({ name: "propertyOwner" })
-  propertyOwner!: User;
+  @ManyToOne(() => User, (user) => user.property, { nullable: false })
+  @JoinColumn({ name: "propertyManager" })
+  propertyManager!: User;
 
   /**
    * Location(s) of the building
@@ -55,13 +55,13 @@ export class Buildings extends BaseEntity {
    * Type of the building
    * @example "Apartment"
    */
-  @Column({ type: "enum", enum: BuildingType, nullable: false })
-  type!: BuildingType;
+  @Column({ type: "enum", enum: PropertyType, nullable: false })
+  type!: PropertyType;
 
   /**
    * Amenities available in the building
    */
-  @ManyToMany(() => Amenities, (amenity) => amenity.id)
+  @ManyToMany(() => Amenity, (amenity) => amenity.id)
   amenities!: string[];
 
   /**

@@ -1,5 +1,5 @@
 import { Tenancies, User } from "@/entities";
-import { Buildings } from "@/entities/buildings.Entity";
+import { Property } from "@/entities/property.Entity";
 import { Unit } from "@/entities/units.Entity";
 import { BaseResponse } from "@/types/response.types";
 
@@ -11,7 +11,7 @@ class DashboardService {
     if (!isValidUser) return { success: false, message: "Invalid user id", data: null };
 
     // Prevent manager from viewing another manager's property
-    const isValidUserBuilding = await Buildings.findOneBy({ id: buildingId, propertyOwner: { id: userId } })
+    const isValidUserBuilding = await Property.findOneBy({ id: buildingId, propertyManager: { id: userId } })
 
     if (!isValidUserBuilding) return { success: false, message: "Property does not exist or you are not authorized to view it", data: null };
     const [
@@ -21,7 +21,7 @@ class DashboardService {
       vacantUnits,
       totalRevenue,
     ] = await Promise.all([
-      Buildings.query("SELECT COUNT(*) AS 'totalProperties' FROM properties WHERE propertyOwner = ?", [userId]),
+      Property.query("SELECT COUNT(*) AS 'totalProperties' FROM property WHERE propertyManager = ?", [userId]),
       Unit.query("SELECT COUNT(*) AS 'totalTenants' FROM units WHERE tenantId IS NOT NULL AND buildingId = ?", [buildingId]),
       Unit.query("SELECT COUNT(*) AS 'totalUnits' FROM units WHERE buildingId = ?", [buildingId]),
       Unit.query("SELECT COUNT(*) AS 'vacantUnits' FROM units WHERE tenantId IS NULL AND buildingId = ?", [buildingId]),

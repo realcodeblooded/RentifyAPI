@@ -9,6 +9,7 @@ export interface BaseContractDetails {
     rent: number;
     currency: string;
     tenancyId: string;
+    managerId: string;
     frequency?: PaymentFrequency;
     gracePeriod?: number;
     startDate?: Date;

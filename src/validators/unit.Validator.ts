@@ -1,4 +1,4 @@
-import { UnitType } from '../types/building.Types';
+import { UnitType } from '../types/property.Types';
 import * as yup from 'yup';
 
 export const unitSchema = yup.object({

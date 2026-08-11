@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { healthRoutes } from "./health";
 import { userRoutes } from "./user.Routes";
-import { buildingRoutes } from "./building.Routes";
+import { propertyRoutes } from "./property.Routes";
 import { unitRoutes } from "./unit.Routes";
 import { maintenanceRoutes } from "./maintenance.Routes";
 import { authRoutes } from "./auth.Routes";
@@ -52,7 +52,7 @@ class Routes {
     // Define your routes here
     this.router.use("/health", healthRoutes.router);
     this.router.use("/users", userRoutes.router);
-    this.router.use("/buildings", authenticate, buildingRoutes.router);
+    this.router.use("/property", authenticate, propertyRoutes.router);
     this.router.use("/units", authenticate, unitRoutes.router);
     this.router.use("/maintenances", authenticate, maintenanceRoutes.router);
     this.router.use("/tenancies", authenticate, tenancyRoutes.router);

@@ -2,7 +2,7 @@ import {
   ALLOWED_FILE_SIZE,
   ALLOWED_MIME_TYPES,
 } from "@/services/images.Services";
-import { BuildingType } from "../types/building.Types";
+import { PropertyType } from "../types/property.Types";
 import * as yup from "yup";
 
 const photoSchema = yup
@@ -20,7 +20,7 @@ const photoSchema = yup
     return ALLOWED_MIME_TYPES.includes(value.type);
   });
 
-export const buildingSchema = yup.object({
+export const propertySchema = yup.object({
   propertyName: yup.string().required("Building name is required!"),
   locationName: yup.string().required("Location name is required!"),
   x: yup.string().required("X coordinate is required!"),
@@ -33,6 +33,6 @@ export const buildingSchema = yup.object({
   type: yup
     .string()
     .required("Building type is required!")
-    .oneOf(Object.values(BuildingType) as BuildingType[]),
+    .oneOf(Object.values(PropertyType) as PropertyType[]),
   amenities: yup.string().optional(),
 });

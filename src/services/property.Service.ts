@@ -1,12 +1,12 @@
 import { logger } from "../utils/logger";
-import { BaseBuilding } from "../types/building.Types";
-import { Buildings } from "../entities/buildings.Entity";
+import { BaseProperty } from "../types/property.Types";
+import { Property } from "../entities/property.Entity";
 import { IMAGES_TO_BASE64 } from "./images.Services";
 import { BaseResponse } from "../types/response.types";
 import { User } from "@/entities";
 
-class BuildingService {
-  async createBuilding(building: BaseBuilding): Promise<BaseResponse> {
+class PropertyService {
+  async createProperty(property: BaseProperty): Promise<BaseResponse> {
     try {
       /**
        * Uncomment to add photos
@@ -18,7 +18,7 @@ class BuildingService {
       // }
       const user = await User.createQueryBuilder("user")
         .leftJoinAndSelect("user.role", "role")
-        .where("user.id = :id", { id: building.propertyOwner })
+        .where("user.id = :id", { id: property.propertyOwner })
         .getOne();
 
       if (user === null) {
@@ -33,34 +33,34 @@ class BuildingService {
         };
       }
 
-      const newBuilding = Buildings.create({
-        ...building,
-        propertyOwner: user,
+      const newProperty = Property.create({
+        ...property,
+        propertyManager: user,
         // photos: base64Photos.Images
       });
 
-      const buildingCreated = await newBuilding.save();
+      const buildingCreated = await newProperty.save();
 
       return {
         success: true,
-        message: "Building added successfully",
+        message: "Property added successfully",
         data: null,
       };
     } catch (error) {
       logger.error(error);
       return {
         success: false,
-        message: "An error occurred when creating a building",
+        message: "An error occurred when creating a property",
         data: error,
       };
     }
   }
 
-  async fetchBuildings(): Promise<BaseResponse> {
+  async fetchProperty(): Promise<BaseResponse> {
     try {
-      const buildings = await Buildings.find();
+      const properties = await Property.find();
 
-      return { success: true, message: "Success!", data: buildings };
+      return { success: true, message: "Success!", data: properties };
     } catch (error) {
       logger.error(error);
       return {
@@ -72,4 +72,4 @@ class BuildingService {
   }
 }
 
-export const buildingService = new BuildingService();
+export const propertyService = new PropertyService();

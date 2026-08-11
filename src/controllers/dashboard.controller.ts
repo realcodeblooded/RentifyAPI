@@ -5,6 +5,14 @@ export class DashboardController {
     async fetchDashMetrics(req: Request, res: Response) {
         try {
             const { userId, propertyId } = req.body;
+            // Validate the request body
+            if (!userId || !propertyId) {
+                return res.status(400).json({
+                    success: false,
+                    message: "userId or propertyId not provided",
+                    data: null
+                })
+            }
             const metrics = await dashboardService.getMetrics(userId, propertyId);
 
             if (!metrics.success) return res.status(400).json(metrics);

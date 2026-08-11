@@ -1,8 +1,8 @@
 import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany, BaseEntity, JoinColumn, OneToOne } from "typeorm";
-import { Buildings } from "./buildings.Entity";
+import { Property } from "./property.Entity";
 import { User } from "./users.Entity";
 import { Tenancies } from "./tenancy.Entity";
-import { UnitType } from "../types/building.Types";
+import { UnitType } from "../types/property.Types";
 import { IsEnum } from "class-validator";
 
 export enum UnitStatus {
@@ -42,11 +42,11 @@ export class Unit extends BaseEntity {
     /**
      * Building this unit belongs to
      */
-    @ManyToOne(() => Buildings, building => building.units, {
+    @ManyToOne(() => Property, property => property.units, {
         onDelete: 'CASCADE'
     })
     @JoinColumn({ name: 'buildingId' })
-    building!: Buildings;
+    building!: Property;
 
     // @Column({ name: 'tenantId' })
     // tenantId!: string

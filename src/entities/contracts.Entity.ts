@@ -1,10 +1,11 @@
 import { IsNumber } from "class-validator";
-import { BaseEntity, Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Tenancies } from "./tenancy.Entity";
 import { User } from "./users.Entity";
+import { Invoice } from "./invoice.Entity";
 
 @Entity('contracts')
-export class Contracts extends BaseEntity {
+export class Contract extends BaseEntity {
     // Contract entity definition goes here
     /**
      * Unique identifier for the contract (UUID format)
@@ -14,6 +15,9 @@ export class Contracts extends BaseEntity {
 
     @Column({ name: 'tenancyId' })
     tenancyId!: string
+
+    @ManyToOne(() => User, (user) => user.contracts)
+    manager!: string
 
     /** 
      * Tenancy associated with the contract
@@ -42,6 +46,9 @@ export class Contracts extends BaseEntity {
      */
     @Column({ type: 'enum', enum: ['MONTHLY', 'YEARLY', 'QUARTERLY'], default: 'MONTHLY', nullable: false })
     frequency!: string;
+
+    @OneToMany(() => Invoice, (invoice) => invoice.contract)
+    invoices!: Invoice[];
 
     /**
      * Grace period in days for payments

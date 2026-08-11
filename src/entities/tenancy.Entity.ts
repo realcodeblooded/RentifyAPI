@@ -12,11 +12,11 @@ import {
     JoinColumn,
     OneToOne
 } from "typeorm";
-import { Buildings } from "./buildings.Entity";
+import { Property } from "./property.Entity";
 import { Unit } from "./units.Entity";
 import { User } from "./users.Entity";
 import { Maintenances } from "./maintenances.Entity";
-import { Contracts } from "./contracts.Entity";
+import { Contract } from "./contracts.Entity";
 
 @Entity('tenancies')
 export class Tenancies extends BaseEntity {
@@ -33,12 +33,12 @@ export class Tenancies extends BaseEntity {
     /**
      * Building where the tenancy is located
     */
-    @ManyToOne(() => Buildings, building => building.tenancies, {
+    @ManyToOne(() => Property, property => property.tenancies, {
         onDelete: 'CASCADE',
         eager: true
     })
     @JoinColumn({ name: 'buildingId' })
-    building!: Buildings;
+    building!: Property;
 
     @Column({ name: 'unitId' })
     unitId!: string;
@@ -65,8 +65,8 @@ export class Tenancies extends BaseEntity {
     @JoinColumn({ name: 'tenantId' })
     tenant!: User;
 
-    @OneToMany(() => Contracts, contract => contract.tenancy, { nullable: false })
-    contracts!: Contracts[];
+    @OneToMany(() => Contract, contract => contract.tenancy, { nullable: false })
+    contracts!: Contract[];
 
 
     /** 

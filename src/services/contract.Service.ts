@@ -1,11 +1,11 @@
-import { Contracts } from "@/entities/contracts.Entity";
+import { Contract } from "@/entities/contracts.Entity";
 import { BaseContractDetails } from "@/types/contract.Types";
 import { BaseResponse } from "@/types/response.types";
 import { logger } from "@/utils/logger";
 export class ContractService {
     async createContract(contractDetails: BaseContractDetails): Promise<BaseResponse> {
         try {
-            const newContract = Contracts.create(contractDetails);
+            const newContract = Contract.create(contractDetails);
 
             await newContract.save();
 

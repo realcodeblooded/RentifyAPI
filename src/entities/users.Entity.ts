@@ -24,7 +24,8 @@ import { Roles } from "./roles.Entity";
 import { Tenancies } from "./tenancy.Entity";
 import { NextOfKin } from "./nextOfKin.Entity";
 import { Maintenances } from "./maintenances.Entity";
-import { Buildings } from "./buildings.Entity";
+import { Property } from "./property.Entity";
+import { Contract } from "./contracts.Entity";
 
 /**
  * User entity representing a registered user in the system.
@@ -61,8 +62,8 @@ export class User extends BaseEntity {
   @Length(2, 100, { message: "Last name must be between 2 and 100 characters" })
   lastName!: string;
 
-  @OneToMany(() => Buildings, (building) => building.propertyOwner)
-  property!: Buildings[];
+  @OneToMany(() => Property, (property) => property.propertyManager)
+  property!: Property[];
 
   /**
    * User's national identification number
@@ -117,6 +118,9 @@ export class User extends BaseEntity {
    */
   @OneToMany(() => Tenancies, (tenancy) => tenancy.tenant)
   tenancies!: Tenancies[];
+
+  @OneToMany(() => Contract, (contracts) => contracts.manager)
+  contracts!: Contract[]
 
   /**
    * The users maintenance requests

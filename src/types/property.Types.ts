@@ -1,4 +1,4 @@
-export enum BuildingType {
+export enum PropertyType {
   STANDALONE = "STANDALONE",
   APARTMENT = "APARTMENT",
   TOWNHOUSE = "TOWNHOUSE",
@@ -27,7 +27,7 @@ export enum UnitType {
   WAREHOUSE = "WAREHOUSE",
 }
 
-export type BaseBuilding = {
+export type BaseProperty = {
   propertyName: string;
   locationName: string;
   x: number;
@@ -36,7 +36,7 @@ export type BaseBuilding = {
    * Uncomment to add photos
    */
   // photos: Express.Multer.File[]
-  type: BuildingType;
+  type: PropertyType;
   amenities: string[];
   propertyOwner: string;
 };
