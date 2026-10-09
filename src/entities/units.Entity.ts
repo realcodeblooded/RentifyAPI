@@ -82,7 +82,7 @@ export class Unit extends BaseEntity {
     /**
      * Tenancy history for this unit
      */
-    @OneToOne(() => Tenancies, tenancy => tenancy.unit)
+    @OneToMany(() => Tenancies, tenancy => tenancy.unit)
     tenancies!: Tenancies[];
 
     /**

@@ -7,6 +7,8 @@ import {
 } from "@/types/maintenance.Types";
 import { BaseResponse } from "@/types/response.types";
 import { logger } from "@/utils/logger";
+import { tenancyService } from "./tenancy.Service";
+import { RoleKey } from "@/types/role.Types";
 
 class MaintenanceService {
   private maintenanceRepository = AppDataSource.getRepository(Maintenances);
@@ -16,6 +18,7 @@ class MaintenanceService {
     data: CreateMaintenanceRequest,
   ): Promise<BaseResponse> {
     try {
+      // The request id must be from a valid user
       const user = await this.userRepository.findOneBy({
         id: data.requestedById,
       });
@@ -23,6 +26,11 @@ class MaintenanceService {
       if (!user) {
         return { success: false, message: "Invalid user ID", data: null };
       }
+      // The user must have an active tenancy to create a maintenance request
+      const hasActiveTenancy = await tenancyService.tenantHasActiveTenancy(data.requestedById);
+      if (!hasActiveTenancy) return { success: false, message: "User must have an active tenancy to create a maintenance request", data: null }
+
+
       const maintenance = this.maintenanceRepository.create({
         description: data.description,
         requestedBy: user,
@@ -45,13 +53,19 @@ class MaintenanceService {
     }
   }
 
-  public async fetchRequests(): Promise<BaseResponse> {
+  public async fetchRequests(role: string, userId: string): Promise<BaseResponse> {
     try {
+      let requests = [];
+      if (role === "TENANT") {
+        requests = await this.maintenanceRepository.query("SELECT * FROM maintenances WHERE requestedByid = ?", [userId])
+      } else if (role === "MANAGER") {
+        requests = await this.maintenanceRepository.query("SELECT * FROM maintenances m INNER JOIN property p ON p.id = m.propertyId WHERE p.propertyManager = ?", [userId])
+      }
       const maintenanceRequests = await this.maintenanceRepository.find({
         order: { requestedAt: "DESC" },
       });
 
-      if (!maintenanceRequests || maintenanceRequests.length === 0) {
+      if (!requests || requests.length === 0) {
         return {
           success: false,
           message: "No maintenance requests found.",
@@ -62,7 +76,7 @@ class MaintenanceService {
       return {
         success: true,
         message: "Maintenance requests fetched successfully.",
-        data: maintenanceRequests,
+        data: requests,
       };
     } catch (error) {
       logger.error("Error fetching maintenance requests:", error);

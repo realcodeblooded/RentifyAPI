@@ -12,8 +12,8 @@ export interface BaseTenancyDetails {
     tenantId: string;
     buildingId: string;
     unitId: string;
+    managerId?: string;
     rent?: number;
-    managerId: string;
     currency?: string;
     frequency?: PaymentFrequency;
     gracePeriod?: number;
@@ -26,6 +26,7 @@ export interface FetchTenanciesResponse extends BaseTenancyDetails {
     firstName: string;
     lastName: string;
     unitKey: string;
+    propertyName: string;
 }
 
 export interface IsVacantResponse {

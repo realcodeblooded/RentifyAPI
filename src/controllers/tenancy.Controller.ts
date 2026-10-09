@@ -52,7 +52,7 @@ export class TenancyController {
 
             if (!isVacated.success) return res.status(400).json({ ...isVacated });
 
-            return res.status(400).json({ ...isVacated });
+            return res.status(200).json({ ...isVacated });
         } catch (error) {
             res.status(500).json({
                 message: 'An unexpected error occurred while vacating unit',

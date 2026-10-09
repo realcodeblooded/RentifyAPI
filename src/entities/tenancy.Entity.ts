@@ -46,14 +46,15 @@ export class Tenancies extends BaseEntity {
     /**
      * Unit being rented
      */
-    @OneToOne(() => Unit, unit => unit.tenancies, {
+    @ManyToOne(() => Unit, unit => unit.tenancies, {
         onDelete: 'CASCADE',
         eager: true
     })
-    @JoinColumn({ name: 'unitId' })
-    unit!: Unit;
+    unit!: Unit
+    // @JoinColumn({ name: 'unitId' })
+    // unit!: Unit;
 
-    @Column({ name: 'tenantId', unique: true })
+    @Column({ name: 'tenantId' })
     tenantId!: string;
 
     /**
@@ -62,6 +63,7 @@ export class Tenancies extends BaseEntity {
     @ManyToOne(() => User, user => user.tenancies, {
         onDelete: 'RESTRICT', eager: true
     })
+
     @JoinColumn({ name: 'tenantId' })
     tenant!: User;
 

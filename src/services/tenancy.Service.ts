@@ -29,19 +29,6 @@ class TenancyService {
       };
     }
 
-    // Check if the unit  they are vacating to is vacant
-    const upForTenancy = await this.isVacant(
-      tenancy.unitId,
-      tenancy.buildingId,
-    );
-    if (!upForTenancy) {
-      return {
-        success: false,
-        message: "Unit not found or has an active tenant",
-        data: null,
-      };
-    }
-
     try {
       await AppDataSource.transaction(async (manager) => {
         const newTenancy = manager.create(Tenancies, tenancy);
@@ -57,23 +44,8 @@ class TenancyService {
         if (!occupy_unit.success) {
           return { success: false, message: occupy_unit.message, data: null };
         }
-
-        const contractDetails: BaseContractDetails = {
-          tenantId: tenancy.tenantId,
-          rent: tenancy.rent ?? upForTenancy.rent, // ✅ ?? is safer than ||
-          currency: tenancy.currency ?? "KSH",
-          tenancyId: createdTenancy.id,
-          managerId: tenancy.managerId,
-          frequency: tenancy.frequency ?? PaymentFrequency.MONTHLY,
-          gracePeriod: tenancy.gracePeriod ?? 5,
-          startDate: tenancy.startDate,
-          endDate: tenancy.endDate,
-        };
-
-        const createdContract =
-          await contractService.createContract(contractDetails); // ✅ pass manager
-        if (!createdContract.success)
-          throw new Error("Could not create contract");
+        // Create contract
+        await contractService.createContract(createdTenancy.id)
       });
       return {
         success: true,
@@ -99,10 +71,8 @@ class TenancyService {
         .leftJoin("tenancy.unit", "unit")
         .leftJoin("tenancy.building", "property")
         .leftJoin("property.propertyManager", "owner")
-        .addSelect(["user.firstName", "user.lastName", "unit.rent", "owner.propertyOwner"])
+        .addSelect(["user.firstName", "user.lastName", "unit.rent", "unit.unitKey", "property.propertyName"])
         .getMany());
-
-      console.log(tenancies);
 
       const response: FetchTenanciesResponse[] = tenancies.map((tenancy) => {
         let formattedTenancy: FetchTenanciesResponse = {
@@ -111,19 +81,16 @@ class TenancyService {
           buildingId: tenancy.buildingId,
           unitId: tenancy.id,
           rent: tenancy.unit.rent,
-          managerId: tenancy.tenant.firstName,
-
           firstName: tenancy.tenant.firstName,
           lastName: tenancy.tenant.lastName,
           unitKey: tenancy.unit.unitKey,
+          propertyName: tenancy.building.propertyName
         };
-        console.log("Response", tenancy);
 
         return formattedTenancy;
       });
-      return { success: true, message: "Success.", data: response };
+      return { success: true, message: "Success.", data: tenancies };
     } catch (error) {
-      console.log(error);
       logger.error(error);
       return {
         success: false,
@@ -133,10 +100,35 @@ class TenancyService {
     }
   }
 
-  public async endTenancy(tenancyId: string): Promise<BaseResponse> {
+  public async endTenancy(tenancyId: string, endDate?: Date): Promise<BaseResponse> {
     try {
+      // Check whether tenancy exists
+      const tenancy = await Tenancies.findOne({ where: { id: tenancyId } })
+      if (!tenancy) {
+        return { success: false, message: "Tenancy not found!", data: null }
+      }
+
+      // End contract
+      await contractService.endContract(tenancyId, endDate)
+
+      // Remove tenancy
+      await Tenancies
+        .createQueryBuilder()
+        .softDelete()
+        .where("id = :id", { id: tenancyId })
+        .execute();
+
+      // Set the tenant id to null in the units table
+      await Unit
+        .createQueryBuilder()
+        .update(Unit)
+        .set({ tenant: null })
+        .where("id = :id", { id: tenancy.unitId })
+        .execute()
+
       return { success: true, message: "Success!", data: null };
     } catch (error) {
+      logger.error(error)
       return {
         success: false,
         message: "An unknown error occurred while ending tenancy",
@@ -163,6 +155,7 @@ class TenancyService {
     }
   }
 
+  // Check if unit has an active tenancy
   public async isVacant(
     unitId: string,
     propertyId: string,
@@ -176,19 +169,13 @@ class TenancyService {
 
       if (!property) return null;
 
-      const isVacant = await Unit.createQueryBuilder("unit")
-        .leftJoinAndSelect("unit.tenant", "tenant")
-        .where("unit.id = :unitId", { unitId })
-        .andWhere(`unit.buildingId = :propertyId`, { propertyId })
-        .getOne();
-
+      const isVacant = await Unit.query("SELECT * FROM units u INNER JOIN property p ON u.buildingId = p.id WHERE u.id = ?", [unitId])
 
       // Find unit's active tenancy
-      if (!isVacant?.tenant && isVacant) {
-        console.log("Vacant Unit", isVacant);
-        return { unitId: isVacant.id, rent: isVacant.rent, manager: property?.propertyManager.id };
+      if (isVacant?.tenantId == null) {
+        return { unitId: isVacant.id, rent: isVacant.rent, manager: isVacant.propertyManager };
       }
-      return null;
+      return { unitId: isVacant.id, rent: isVacant.rent, manager: isVacant.propertyManager };
     } catch (error) {
       logger.error(error);
       return null;
@@ -249,7 +236,10 @@ class TenancyService {
       unit.tenant = null;
       await unit.save();
       return true;
-    } catch (error) { }
+    } catch (error) {
+      logger.error(error)
+      return { success: false }
+    }
   }
 }
 

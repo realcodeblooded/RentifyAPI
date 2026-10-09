@@ -73,7 +73,7 @@ Run the following SQL commands:
 CREATE DATABASE RentifyDB;
 
 -- Create user with password
-CREATE USER 'rentifyUser'@'localhost' IDENTIFIED BY 'Test@1234!';
+CREATE USER 'rentifyUser'@'localhost' IDENTIFIED BY 'password';
 
 -- Grant privileges
 GRANT ALL PRIVILEGES ON RentifyDB.* TO 'rentifyUser'@'localhost';
@@ -92,7 +92,7 @@ EXIT;
 
 ```bash
 mysql -u rentifyUser -p RentifyDB
-# Enter password: Test@1234!
+# Enter password: password
 ```
 
 ### 4. Configure Environment Variables

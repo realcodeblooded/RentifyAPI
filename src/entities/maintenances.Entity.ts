@@ -9,6 +9,7 @@ import {
 } from "typeorm";
 import { User } from "./users.Entity";
 import { Tenancies } from "./tenancy.Entity";
+import { Property } from "./property.Entity";
 
 @Entity("maintenances")
 export class Maintenances {
@@ -63,6 +64,12 @@ export class Maintenances {
    */
   @Column({ type: "text", nullable: true })
   resolutionNotes?: string;
+
+  /**
+   * Property associated with the maintenance requsest
+   */
+  @ManyToOne(() => Property, (property) => property.maintenanceRequests)
+  property!: Property;
 
   /**
    * Timestamp when the maintenance record was created

@@ -15,6 +15,7 @@ import { Unit } from "./units.Entity";
 import { Amenity } from "./amenities.Entity";
 import { User } from "./users.Entity";
 import { PropertyType } from "@/types/property.Types";
+import { Maintenances } from "./maintenances.Entity";
 
 @Entity("property")
 export class Property extends BaseEntity {
@@ -87,4 +88,9 @@ export class Property extends BaseEntity {
    */
   @OneToMany(() => Unit, (unit) => unit.building)
   units!: Unit[];
+  /**
+   * Maintenance requests associated with the building
+   */
+  @OneToMany(() => Maintenances, (maintenance) => maintenance.property)
+  maintenanceRequests!: Maintenances[]
 }

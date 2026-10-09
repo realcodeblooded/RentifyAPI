@@ -125,7 +125,7 @@ class AuthService {
             const user = await User
                 .createQueryBuilder()
                 .select('*')
-                .from("user", "u")
+                .from("users", "u")
                 .where("u.email = :email", { email })
                 .getRawOne()
 

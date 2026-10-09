@@ -31,7 +31,9 @@ export class MaintenanceController {
 
   async fetchRequests(req: Request, res: Response) {
     try {
-      const result = await maintenanceService.fetchRequests();
+      const role = "MANAGER"
+      const userId = "b5e86f6c-54b3-4c9b-8cf9-386d1411fb4c"
+      const result = await maintenanceService.fetchRequests(role, userId);
 
       if (!result.success) {
         return res.status(404).json(result);

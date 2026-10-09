@@ -7,7 +7,7 @@ import { RoleKey } from "../types/role.Types";
 import { phoneService } from "@/services/phoneFormartter.service";
 import { maskCard, maskPhone, maskStringV2 } from "maskdata";
 
-class UserService {
+export class UserService {
   public async addUser(
     userData: CreateUserRequest,
     role: RoleKey,

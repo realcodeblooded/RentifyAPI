@@ -16,16 +16,16 @@ class PropertyService {
       // if (base64Photos.Error) {
       //     return { success: false, message: base64Photos.Error, data: base64Photos.Error }
       // }
-      const user = await User.createQueryBuilder("user")
+      const propertyManager = await User.createQueryBuilder("user")
         .leftJoinAndSelect("user.role", "role")
         .where("user.id = :id", { id: property.propertyOwner })
         .getOne();
 
-      if (user === null) {
-        return { success: false, message: "User not found!", data: null };
+      if (propertyManager === null) {
+        return { success: false, message: "Property manager not found!", data: null };
       }
 
-      if (user.role.key !== "MANAGER") {
+      if (propertyManager.role.key !== "MANAGER") {
         return {
           success: false,
           message: "Property owner must be a manager",
@@ -35,7 +35,7 @@ class PropertyService {
 
       const newProperty = Property.create({
         ...property,
-        propertyManager: user,
+        propertyManager,
         // photos: base64Photos.Images
       });
 
